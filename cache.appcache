@@ -1,11 +1,10 @@
 CACHE MANIFEST
-# rev 20260929-abas4d
+# rev 20260929-v2
 
 CACHE:
 index.html
 jb.html
 logo.png
-bg.jpg
 jb.js
 core.js
 mem.js
