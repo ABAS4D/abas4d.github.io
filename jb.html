@@ -90,7 +90,7 @@
   </div>
   <div class="sub-name">عباس محمود</div>
   <div id="state">running jailbreak...</div>
-  <div id="log">Loading exploit module...</div>
+  <div id="log">Loading main module...</div>
 </div>
 
 <script>
@@ -107,7 +107,16 @@
   };
 </script>
 
-<!-- استدعاء ملف jb.js الرئيسي فقط ليتولى تحميل الموديولات بالترتيب -->
-<script type="module" src="jb.js" onerror="logMsg('Failed to load jb.js module', true)"></script>
+<script type="module">
+  import('./jb.js')
+    .then(() => {
+      logMsg('jb.js loaded successfully!');
+    })
+    .catch((err) => {
+      logMsg('Module Error: ' + (err.message || err), true);
+      var st = document.getElementById("state");
+      if (st) { st.textContent = "JAILBREAK FAILED"; st.style.color = "#fc8181"; }
+    });
+</script>
 </body>
 </html>
