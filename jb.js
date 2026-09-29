@@ -59,8 +59,8 @@ function finishUI(ok) {
     m.textContent = ok
       ? "تم التفعيل"
       : armedEver
-        ? "Restart your console"
-        : "Refresh the page and run again";
+        ? "قم بإعادة تشغيل الجهاز"
+        : "اخرج من المتصفح وادخل مرة ثانية";
 
   document.body.className = ok ? "done" : "fail";
 }
