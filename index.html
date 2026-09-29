@@ -1,77 +1,315 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" manifest="cache.appcache">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ABAS4D HOST</title>
+
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;width:100%;min-height:100%;background:#0a0c10 url('bg.jpg') no-repeat center center fixed;background-size:cover;color:#e6ebf2;font:15px/1.45 "Segoe UI",Tahoma,Arial,sans-serif}
-body{min-height:100vh;display:flex;align-items:center;justify-content:center}
-.overlay{position:fixed;inset:0;background:rgba(10,12,16,.75);z-index:1}
-.card{position:relative;z-index:2;width:90%;max-width:460px;background:rgba(20,24,33,.94);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:30px 24px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.7)}
-.brand-header{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
-.brand-header img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #00ff88;box-shadow:0 0 12px rgba(0,255,136,.4)}
-.brand-header h1{margin:0;font-size:26px;font-weight:800;letter-spacing:2px;color:#fff}
-#state{font-size:22px;font-weight:700;margin:10px 0 8px;min-height:32px}
-#det{font-size:13px;color:#8b95a3;margin:0 0 8px}
-#det b{color:#c8ced8;font-weight:600}
-#cache{font-size:18px;font-weight:800;color:#ffd400;margin:10px 0 0;min-height:24px}
-#cache.cacheok{color:#39e879}
-.bad{color:#fc8181}.warn{color:#ffd400}
-.copyright{margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#687384;letter-spacing:1px}
-.copyright b{color:#00ff88}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    background:#000 url("bg.jpg") center/cover no-repeat;
+    font-family:Arial,Tahoma,sans-serif;
+    color:#fff;
+}
+
+body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+}
+
+.card{
+    position:relative;
+    z-index:2;
+    width:90%;
+    max-width:450px;
+    padding:30px 20px;
+    text-align:center;
+    background:rgba(15,15,15,.94);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.7);
+}
+
+.logo{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:50%;
+    margin-bottom:12px;
+}
+
+.title{
+    font-size:27px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+#state{
+    margin-top:18px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#det{
+    margin-top:8px;
+    color:#aaa;
+    font-size:13px;
+}
+
+#cache{
+    margin-top:15px;
+    color:#ffd400;
+    font-weight:bold;
+    font-size:16px;
+}
+
+.footer{
+    margin-top:22px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.1);
+    color:#777;
+    font-size:12px;
+}
+
+.green{color:#39e879!important}
+.red{color:#ff4444!important}
+.yellow{color:#ffd400!important}
 </style>
 </head>
+
 <body>
+
 <div class="overlay"></div>
+
 <div class="card">
-  <div class="brand-header">
-    <img src="logo.png" alt="الشعار" onerror="this.style.display='none'">
-    <h1>ABAS4D</h1>
-  </div>
-  <div id="state">جاري التحقق من النظام...</div>
-  <div id="det"></div>
-  <div id="cache"></div>
-  <div class="copyright">© 2026 <b>ABAS4D</b> — عباس محمود</div>
+
+    <img src="logo.png" class="logo" onerror="this.style.display='none'">
+
+    <div class="title">ABAS4D</div>
+
+    <div id="state">جاري التحقق...</div>
+
+    <div id="det"></div>
+
+    <div id="cache"></div>
+
+    <div class="footer">
+        © 2026 ABAS4D — عباس محمود
+    </div>
+
 </div>
+
 <script>
 (function(){
-  var stateEl=document.getElementById("state"),detEl=document.getElementById("det"),cacheEl=document.getElementById("cache");
-  function setState(t,c){stateEl.textContent=t;stateEl.className=c||""}
-  function setCache(t,ok){cacheEl.textContent=t;cacheEl.className=ok?"cacheok":""}
-  var params=new URLSearchParams(location.search),SUPPORTED={1302:1,1304:1,1350:1,1352:1};
-  var key=null,fwnum=null,m=/PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
-  if(m){var ms=parseInt(m[2],16).toString(16);if(ms.length<2)ms="0"+ms;key=m[1]+"."+ms;fwnum=parseInt(m[1],10)*100+parseInt(ms,10)}
-  var supported=params.get("force")==="1"||(fwnum!==null&&SUPPORTED[fwnum]===1);
-  detEl.innerHTML="النظام <b>"+(key||"غير معروف")+"</b> &middot; "+(supported?"<b>مدعوم</b>":"غير موجود ضمن جدول هذا الإصدار");
-  var target="jb.html"+location.search;
-  function go(){setState("جاري تشغيل الجلبريك...","warn");location.replace(target)}
-  function waitForTap(msg,action){
-    setState(msg,"warn");
-    function fire(){window.removeEventListener("click",fire);window.removeEventListener("keydown",fire);action()}
-    window.addEventListener("click",fire);window.addEventListener("keydown",fire)
-  }
-  if(!supported){setState("النظام غير مدعوم","bad");waitForTap("اخرج، أطفئ الإنترنت، وعُد ثم اضغط X أو المس الشاشة",go);return}
-  var ac=window.applicationCache;
-  if(!ac||!document.documentElement.hasAttribute("manifest"))go();
-  else if(!navigator.onLine){setCache("بدون اتصال — من الذاكرة المؤقتة",true);go()}
-  else if(ac.status===ac.IDLE){setCache("جاهز",true);go()}
-  else if(ac.status===ac.UPDATEREADY){
-    try{ac.swapCache()}catch(e){}
-    setCache("تحديث جاهز",true);
-    waitForTap("اخرج، أطفئ الإنترنت، وعُد ثم اضغط X أو المس الشاشة",function(){location.reload()})
-  }else{
-    setCache("جاري التخزين المؤقت...");
-    ac.addEventListener("downloading",function(){setCache("جاري التخزين المؤقت...")},false);
-    ac.addEventListener("progress",function(e){if(e&&e.total)setCache("جاري التخزين المؤقت... "+Math.round(e.loaded/e.total*100)+"%")},false);
-    ac.addEventListener("cached",function(){setCache("اكتمل التخزين المؤقت",true);waitForTap("تم الحفظ — اخرج، أطفئ الإنترنت، وعُد ثم اضغط X",go)},false);
-    ac.addEventListener("updateready",function(){try{ac.swapCache()}catch(e){}setCache("اكتمل التحديث",true);waitForTap("التحديث جاهز — اخرج، أطفئ الإنترنت، وعُد ثم اضغط X",function(){location.reload()})},false);
-    ac.addEventListener("noupdate",function(){setCache("جاهز للعمل بدون اتصال",true);go()},false);
-    ac.addEventListener("error",function(){setCache("تعذر التخزين المؤقت");waitForTap("فشل التخزين — اخرج، أطفئ الإنترنت، وعُد ثم اضغط X",go)},false);
-    ac.addEventListener("obsolete",function(){setCache("الذاكرة المؤقتة قديمة");waitForTap("الذاكرة قديمة — اخرج، أطفئ الإنترنت، وعُد ثم اضغط X",go)},false);
-  }
+
+    const state = document.getElementById("state");
+    const det = document.getElementById("det");
+    const cache = document.getElementById("cache");
+
+    const SUPPORTED = {
+        1302:true,
+        1304:true,
+        1350:true,
+        1352:true
+    };
+
+    let key = null;
+    let fw = null;
+
+    const m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(
+        navigator.userAgent
+    );
+
+    if(m){
+
+        let minor = parseInt(m[2],16).toString(16);
+
+        if(minor.length < 2)
+            minor = "0" + minor;
+
+        key = m[1] + "." + minor;
+
+        fw =
+            parseInt(m[1],10) * 100 +
+            parseInt(minor,10);
+    }
+
+    det.innerHTML =
+        "النظام: <b>" +
+        (key || "غير معروف") +
+        "</b>";
+
+    function run(){
+
+        state.textContent =
+            "جاري تشغيل الجلبريك...";
+
+        state.className = "yellow";
+
+        location.replace(
+            "jb.html" + location.search
+        );
+    }
+
+    if(
+        fw !== null &&
+        SUPPORTED[fw]
+    ){
+
+        if(!window.applicationCache){
+
+            cache.textContent =
+                "جاهز";
+
+            cache.className =
+                "green";
+
+            run();
+
+            return;
+        }
+
+        const ac =
+            window.applicationCache;
+
+        if(
+            ac.status ===
+            window.applicationCache.IDLE
+        ){
+
+            cache.textContent =
+                "جاهز";
+
+            cache.className =
+                "green";
+
+            run();
+
+            return;
+        }
+
+        cache.textContent =
+            "جاري التخزين المؤقت...";
+
+        ac.addEventListener(
+            "cached",
+            function(){
+
+                cache.textContent =
+                    "اكتمل التخزين المؤقت";
+
+                cache.className =
+                    "green";
+
+                setTimeout(run,300);
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "noupdate",
+            function(){
+
+                cache.textContent =
+                    "جاهز";
+
+                cache.className =
+                    "green";
+
+                setTimeout(run,300);
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "updateready",
+            function(){
+
+                try{
+                    ac.swapCache();
+                }catch(e){}
+
+                cache.textContent =
+                    "اكتمل التحديث";
+
+                cache.className =
+                    "green";
+
+                setTimeout(
+                    function(){
+                        location.reload();
+                    },
+                    300
+                );
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "error",
+            function(){
+
+                cache.textContent =
+                    "خطأ بالتخزين المؤقت";
+
+                cache.className =
+                    "red";
+
+                setTimeout(run,500);
+            },
+            false
+        );
+
+    }else{
+
+        state.textContent =
+            "النظام غير مدعوم";
+
+        state.className =
+            "red";
+
+        cache.textContent =
+            "اخرج، أطفئ الإنترنت، وعُد ثم اضغط X أو المس الشاشة";
+
+        cache.className =
+            "yellow";
+
+        document.addEventListener(
+            "keydown",
+            function(e){
+
+                if(e.key === "Enter" ||
+                   e.key === "x" ||
+                   e.key === "X"){
+
+                    run();
+                }
+
+            }
+        );
+
+        document.addEventListener(
+            "click",
+            run,
+            {once:true}
+        );
+    }
+
 })();
 </script>
+
 </body>
 </html>
