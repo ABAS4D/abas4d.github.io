@@ -1,11 +1,9 @@
 CACHE MANIFEST
-# rev 20260929-abas4d-offline-v24
+# rev 20260929-abas4d-offline-v26
 
 CACHE:
-
 index.html
 jb.html
-cache.appcache
 
 logo.png
 bg.jpg
@@ -26,7 +24,3 @@ patches/1352.bin
 
 NETWORK:
 *
-
-FALLBACK:
-index.html index.html
-jb.html jb.html
