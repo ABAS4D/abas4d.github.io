@@ -119,6 +119,17 @@
       appendLog("Error: " + args, true);
     };
 
+    // اعتراض أخطاء الـ Worker لتتبع rpc_worker.js
+    var OrigWorker = window.Worker;
+    window.Worker = function(scriptURL, options) {
+      appendLog("Launching worker: " + scriptURL, false);
+      var w = new OrigWorker(scriptURL, options);
+      w.onerror = function(e) {
+        appendLog("Worker Error (" + scriptURL + "): " + (e.message || "Failed to load worker"), true);
+      };
+      return w;
+    };
+
     window.addEventListener("unhandledrejection", function(e) {
       appendLog("Promise Error: " + (e.reason ? (e.reason.message || e.reason) : e), true);
     });
