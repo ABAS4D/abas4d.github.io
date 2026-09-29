@@ -9,7 +9,16 @@
 html,body{margin:0;padding:0;width:100%;min-height:100%;background:#0a0c10 url('bg.jpg') no-repeat center center fixed;background-size:cover;color:#e6ebf2;font:15px/1.45 "Segoe UI",Tahoma,Arial,sans-serif}
 body{min-height:100vh;display:flex;align-items:center;justify-content:center}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.16);z-index:1}
-.card{position:relative;z-index:2;width:90%;max-width:460px;background:rgba(5,8,12,.22);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:30px 24px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.7)}
+.card{position:relative;z-index:2;width:90%;max-width:460px;background: rgba(5, 15, 35, 0.72);
+
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+
+border: 1px solid rgba(50, 130, 255, 0.25);
+
+box-shadow:
+  0 10px 35px rgba(0, 0, 0, 0.65),
+  0 0 25px rgba(0, 80, 255, 0.12);
 .brand-header{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:20px}
 .brand-header img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #00ff88;box-shadow:0 0 12px rgba(0,255,136,.4)}
 .brand-header h1{margin:0;font-size:26px;font-weight:800;letter-spacing:2px;color:#fff}
