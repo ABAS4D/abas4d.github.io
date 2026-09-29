@@ -6,33 +6,17 @@
 <title>ABAS4D - Jailbreak</title>
 <style>
 *{box-sizing:border-box}
-html,body{
-  margin:0;padding:0;width:100%;min-height:100%;
-  background:#0a0c10 url('bg.jpg') no-repeat center center fixed;
-  background-size:cover;color:#e6ebf2;
-  font-family:"Segoe UI",Tahoma,Arial,sans-serif;
-}
+html,body{margin:0;padding:0;width:100%;min-height:100%;background:#0a0c10 url('bg.jpg') no-repeat center center fixed;background-size:cover;color:#e6ebf2;font-family:"Segoe UI",Tahoma,Arial,sans-serif}
 body{min-height:100vh;display:flex;align-items:center;justify-content:center}
 .overlay{position:fixed;inset:0;background:rgba(10,12,16,.75);z-index:1}
-#wrap{
-  position:relative;z-index:2;width:90%;max-width:460px;
-  padding:30px 24px;margin:20px auto;background:rgba(20,24,33,.94);
-  border:1px solid rgba(255,255,255,.15);border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.7);text-align:center
-}
+#wrap{position:relative;z-index:2;width:90%;max-width:460px;padding:30px 24px;margin:20px auto;background:rgba(20,24,33,.94);border:1px solid rgba(255,255,255,.15);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.7);text-align:center}
 .brand-header{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px}
 .brand-header img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #00ff88;box-shadow:0 0 12px rgba(0,255,136,.4)}
 .brand-header b{font-size:26px;font-weight:800;letter-spacing:2px;color:#fff}
 .sub-name{font-size:16px;color:#8b95a3;margin:0 0 24px;font-weight:600}
 .status-row{display:flex;align-items:center;justify-content:center;gap:14px;min-height:58px}
 #msg{font-size:26px;font-weight:800;letter-spacing:1px;color:#fff;margin:0;min-height:38px}
-.spinner{
-  width:30px;height:30px;border-radius:50%;
-  border:4px solid rgba(255,255,255,.25);
-  border-top-color:#fff;border-right-color:#fff;
-  animation:spin .8s linear infinite;
-  flex:0 0 auto
-}
+.spinner{width:30px;height:30px;border-radius:50%;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;border-right-color:#fff;animation:spin .8s linear infinite;flex:0 0 auto}
 @keyframes spin{to{transform:rotate(360deg)}}
 body.done .spinner,body.fail .spinner{display:none}
 body.done #msg{color:#39e879}
@@ -50,47 +34,20 @@ body.done #salawat{display:block}
     <b>ABAS4D</b>
   </div>
   <div class="sub-name">عباس محمود</div>
-
   <div class="status-row">
     <div class="spinner" aria-label="جاري التشغيل"></div>
     <div id="msg">جاري التشغيل...</div>
   </div>
-
   <div id="salawat">صلي على محمد (ﷺ)</div>
-
-  <!-- Hooks required by jb.js. They are hidden from the normal interface. -->
-  <div id="state"></div>
-  <div id="log"></div>
-  <div id="out"></div>
+  <div id="state"></div><div id="log"></div><div id="out"></div>
 </div>
-
 <script>
 (function(){
-  var logDiv=document.getElementById("log");
-
-  function appendLog(msg,isErr){
-    if(!logDiv)return;
-    var line=document.createElement("div");
-    if(isErr)line.className="err";
-    line.textContent=msg;
-    logDiv.appendChild(line);
-    logDiv.scrollTop=logDiv.scrollHeight;
-  }
-
-  var origLog=console.log;
+  var origLog=console.log,origErr=console.error;
   console.log=function(){origLog.apply(console,arguments)};
-  var origErr=console.error;
   console.error=function(){origErr.apply(console,arguments)};
-
-  /* Keep the Worker API untouched; only suppress the visible debug output. */
-  var OrigWorker=window.Worker;
-  window.Worker=function(scriptURL,options){
-    var w=new OrigWorker(scriptURL,options);
-    return w;
-  };
 })();
 </script>
-
 <script type="module" src="jb.js"></script>
 </body>
 </html>
