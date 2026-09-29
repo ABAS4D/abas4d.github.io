@@ -3,10 +3,9 @@
 
 <head>
 <meta charset="utf-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>ABAS4D</title>
+<title>ABAS4D - Running</title>
 
 <style>
 * {
@@ -48,10 +47,11 @@ body {
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(5,7,12,.78);
+    background: rgba(5,7,12,.80);
+    pointer-events: none;
 }
 
-.box {
+.panel {
     position: fixed;
 
     left: 50%;
@@ -62,58 +62,94 @@ body {
 
     transform: translate(-50%, -50%);
 
-    padding: 30px 25px;
+    padding: 32px 25px;
 
     background: rgba(19,23,32,.96);
 
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-
+    border: 1px solid rgba(255,255,255,.15);
     border-radius: 18px;
 
     text-align: center;
 
     box-shadow:
-        0 15px 45px
-        rgba(0,0,0,.65);
+        0 15px 45px rgba(0,0,0,.7);
 
     z-index: 2;
 }
 
 .logo {
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
 
     object-fit: cover;
-
     border-radius: 50%;
 
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
-.title {
-    font-size: 28px;
+.brand {
+    font-size: 27px;
     font-weight: 800;
 
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
-#status {
-    font-size: 22px;
+#message {
+    font-size: 24px;
     font-weight: 800;
 
-    min-height: 32px;
+    min-height: 35px;
 }
 
-#info {
+#details {
     margin-top: 12px;
 
     color: #9ba3af;
 
     font-size: 14px;
-
     line-height: 1.7;
+}
+
+.spinner {
+    width: 34px;
+    height: 34px;
+
+    margin: 22px auto;
+
+    border: 4px solid rgba(255,255,255,.18);
+
+    border-top-color: #fff;
+    border-right-color: #fff;
+
+    border-radius: 50%;
+
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#run {
+    width: 100%;
+
+    margin-top: 24px;
+    padding: 15px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: #00c875;
+    color: #07120d;
+
+    font-size: 20px;
+    font-weight: 800;
+}
+
+#run:disabled {
+    opacity: .45;
 }
 
 .ok {
@@ -127,54 +163,6 @@ body {
 .bad {
     color: #ff5252;
 }
-
-.spinner {
-    width: 32px;
-    height: 32px;
-
-    margin: 20px auto;
-
-    border:
-        4px solid
-        rgba(255,255,255,.18);
-
-    border-top-color: #fff;
-    border-right-color: #fff;
-
-    border-radius: 50%;
-
-    animation:
-        spin .8s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-#start {
-    width: 100%;
-
-    margin-top: 22px;
-
-    padding: 15px;
-
-    border: 0;
-
-    border-radius: 10px;
-
-    background: #00c875;
-
-    color: #07120d;
-
-    font-size: 20px;
-    font-weight: 800;
-}
-
-#start:disabled {
-    opacity: .45;
-}
 </style>
 </head>
 
@@ -182,7 +170,7 @@ body {
 
 <div class="overlay"></div>
 
-<div class="box">
+<div class="panel">
 
     <img
         src="logo.png"
@@ -191,123 +179,103 @@ body {
         onerror="this.style.display='none'"
     >
 
-    <div class="title">
+    <div class="brand">
         ABAS4D
     </div>
 
-    <div id="status">
-        جاري التحميل...
+    <div id="message" class="ok">
+        جاهز للتشغيل
     </div>
 
-    <div class="spinner"
-         id="spinner">
+    <div id="spinner"
+         class="spinner"
+         style="display:none">
     </div>
 
-    <div id="info">
-        جاري تجهيز الصفحة...
+    <div id="details">
+        الصفحة محمّلة من الكاش.
     </div>
 
-    <button
-        id="start"
-        disabled>
+    <button id="run">
         اضغط X للبدء
     </button>
 
 </div>
-
 
 <script>
 (function () {
 
 "use strict";
 
-var status =
-    document.getElementById("status");
+var message =
+    document.getElementById("message");
 
-var info =
-    document.getElementById("info");
+var details =
+    document.getElementById("details");
 
 var spinner =
     document.getElementById("spinner");
 
-var start =
-    document.getElementById("start");
+var run =
+    document.getElementById("run");
 
 
-/*
- * ننتظر قليلاً حتى يكمل المتصفح
- * تحميل الصفحة من الكاش.
- *
- * لا يوجد هنا fetch ولا طلب إنترنت.
- */
+function start() {
 
-setTimeout(function () {
-
-    spinner.style.display = "none";
-
-    status.textContent =
-        "جاهز";
-
-    status.className =
-        "ok";
-
-    info.innerHTML =
-        "تم تجهيز الصفحة.<br>" +
-        "يمكنك فصل الإنترنت الآن.";
-
-    start.disabled = false;
-
-}, 2500);
-
-
-/*
- * زر X / Enter
- *
- * تشغيل الصفحة التالية فقط بعد
- * تأكيد المستخدم.
- */
-
-function openHost() {
-
-    if (start.disabled)
+    if (run.disabled)
         return;
 
-    start.disabled = true;
+    run.disabled = true;
 
-    status.textContent =
+    message.textContent =
         "جاري التشغيل...";
 
-    status.className =
+    message.className =
         "warn";
 
-    info.textContent =
-        "جاري فتح صفحة التشغيل...";
+    details.textContent =
+        "انتظر...";
+
+    spinner.style.display =
+        "block";
 
     /*
-     * لا نضيف Date.now()
-     * حتى يبقى الرابط قابلاً
-     * للاستخدام من الكاش.
+     * اسم ثابت حتى يبقى متوافق
+     * مع AppCache.
      */
 
-    setTimeout(function () {
+    var script =
+        document.createElement("script");
 
-        location.href = "jb.html";
+    script.type = "module";
+    script.src = "jb.js";
 
-    }, 400);
+    script.onerror = function () {
 
+        spinner.style.display =
+            "none";
+
+        message.textContent =
+            "تعذر تحميل jb.js";
+
+        message.className =
+            "bad";
+
+        details.textContent =
+            "تأكد أن jb.js موجود داخل الكاش.";
+
+        run.disabled = false;
+    };
+
+    document.body.appendChild(script);
 }
 
 
-start.addEventListener(
+run.addEventListener(
     "click",
-    openHost
+    start
 );
 
-
-/*
- * Enter / X حسب طريقة
- * إرسال المتصفح للزر.
- */
 
 document.addEventListener(
     "keydown",
@@ -317,20 +285,12 @@ document.addEventListener(
             event.key === "Enter" ||
             event.key === " "
         ) {
-
-            if (!start.disabled) {
-                openHost();
-            }
-
+            start();
         }
 
     }
 );
 
-
-/*
- * منع تحريك الصفحة بسبب drift.
- */
 
 document.addEventListener(
     "touchmove",
