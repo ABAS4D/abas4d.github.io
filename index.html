@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" manifest="cache.appcache">
+<html lang="ar" dir="rtl"
+      manifest="cache.appcache">
 
 <head>
+
 <meta charset="utf-8">
+
 <meta name="viewport"
       content="width=device-width,initial-scale=1">
 
 <title>ABAS4D</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -34,7 +38,7 @@ body {
         #090b10 url("bg.jpg")
         center center / cover no-repeat;
 
-    color: #fff;
+    color: #ffffff;
 
     font-family:
         Arial,
@@ -48,10 +52,14 @@ body {
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(5,7,12,.78);
+
+    background:
+        rgba(5,7,12,.78);
+
+    pointer-events: none;
 }
 
-.box {
+.card {
     position: fixed;
 
     left: 50%;
@@ -60,11 +68,13 @@ body {
     width: 90%;
     max-width: 460px;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
     padding: 30px 25px;
 
-    background: rgba(19,23,32,.96);
+    background:
+        rgba(19,23,32,.96);
 
     border:
         1px solid
@@ -81,32 +91,56 @@ body {
     z-index: 2;
 }
 
-.logo {
-    width: 65px;
-    height: 65px;
+.brand-header {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-bottom: 22px;
+}
+
+.brand-header img {
+
+    width: 58px;
+    height: 58px;
 
     object-fit: cover;
 
     border-radius: 50%;
 
-    margin-bottom: 10px;
+    border:
+        2px solid
+        #00ff88;
 }
 
-.title {
+.brand-header h1 {
+
+    margin: 0;
+
     font-size: 28px;
+
     font-weight: 800;
 
-    margin-bottom: 20px;
+    letter-spacing: 1px;
 }
 
-#status {
-    font-size: 22px;
+#state {
+
+    font-size: 23px;
+
     font-weight: 800;
 
-    min-height: 32px;
+    min-height: 34px;
+
+    margin-top: 10px;
 }
 
-#info {
+#det {
+
     margin-top: 12px;
 
     color: #9ba3af;
@@ -116,8 +150,19 @@ body {
     line-height: 1.7;
 }
 
-.ok {
-    color: #39e879;
+#cache {
+
+    margin-top: 15px;
+
+    color: #9ba3af;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.cacheok {
+    color: #39e879 !important;
 }
 
 .warn {
@@ -128,222 +173,630 @@ body {
     color: #ff5252;
 }
 
-.spinner {
-    width: 32px;
-    height: 32px;
+.copyright {
 
-    margin: 20px auto;
+    margin-top: 25px;
 
-    border:
-        4px solid
-        rgba(255,255,255,.18);
+    color: #777f8c;
 
-    border-top-color: #fff;
-    border-right-color: #fff;
-
-    border-radius: 50%;
-
-    animation:
-        spin .8s linear infinite;
+    font-size: 13px;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+.copyright b {
+
+    color: #00ff88;
 }
 
-#start {
-    width: 100%;
-
-    margin-top: 22px;
-
-    padding: 15px;
-
-    border: 0;
-
-    border-radius: 10px;
-
-    background: #00c875;
-
-    color: #07120d;
-
-    font-size: 20px;
-    font-weight: 800;
-}
-
-#start:disabled {
-    opacity: .45;
-}
 </style>
+
 </head>
+
 
 <body>
 
 <div class="overlay"></div>
 
-<div class="box">
 
-    <img
-        src="logo.png"
-        class="logo"
-        alt="ABAS4D"
-        onerror="this.style.display='none'"
-    >
+<div class="card">
 
-    <div class="title">
-        ABAS4D
+    <div class="brand-header">
+
+        <img
+            src="logo.png"
+            alt="Logo"
+            onerror="
+                this.style.display='none'
+            "
+        >
+
+        <h1>
+            ABAS4D
+        </h1>
+
     </div>
 
-    <div id="status">
-        جاري التحميل...
+
+    <div id="state">
+        detecting firmware...
     </div>
 
-    <div class="spinner"
-         id="spinner">
-    </div>
 
-    <div id="info">
-        جاري تجهيز الصفحة...
-    </div>
+    <div id="det"></div>
 
-    <button
-        id="start"
-        disabled>
-        اضغط X للبدء
-    </button>
+
+    <div id="cache"></div>
+
+
+    <div class="copyright">
+
+        © 2026
+        <b>ABAS4D</b>
+        — عباس محمود
+
+    </div>
 
 </div>
 
 
 <script>
+
 (function () {
 
-"use strict";
+    var stateEl =
+        document.getElementById(
+            "state"
+        );
 
-var status =
-    document.getElementById("status");
+    var detEl =
+        document.getElementById(
+            "det"
+        );
 
-var info =
-    document.getElementById("info");
-
-var spinner =
-    document.getElementById("spinner");
-
-var start =
-    document.getElementById("start");
-
-
-/*
- * ننتظر قليلاً حتى يكمل المتصفح
- * تحميل الصفحة من الكاش.
- *
- * لا يوجد هنا fetch ولا طلب إنترنت.
- */
-
-setTimeout(function () {
-
-    spinner.style.display = "none";
-
-    status.textContent =
-        "جاهز";
-
-    status.className =
-        "ok";
-
-    info.innerHTML =
-        "تم تجهيز الصفحة.<br>" +
-        "يمكنك فصل الإنترنت الآن.";
-
-    start.disabled = false;
-
-}, 2500);
+    var cacheEl =
+        document.getElementById(
+            "cache"
+        );
 
 
-/*
- * زر X / Enter
- *
- * تشغيل الصفحة التالية فقط بعد
- * تأكيد المستخدم.
- */
+    function setState(
+        text,
+        className
+    ) {
 
-function openHost() {
+        stateEl.textContent =
+            text;
 
-    if (start.disabled)
-        return;
+        stateEl.className =
+            className || "";
 
-    start.disabled = true;
+    }
 
-    status.textContent =
-        "جاري التشغيل...";
 
-    status.className =
-        "warn";
+    function setCache(
+        text,
+        ok
+    ) {
 
-    info.textContent =
-        "جاري فتح صفحة التشغيل...";
+        cacheEl.textContent =
+            text;
+
+        cacheEl.className =
+            ok
+                ? "cacheok"
+                : "";
+
+    }
+
+
+    var params =
+        new URLSearchParams(
+            location.search
+        );
+
 
     /*
-     * لا نضيف Date.now()
-     * حتى يبقى الرابط قابلاً
-     * للاستخدام من الكاش.
+     * الإصدارات المدعومة
      */
 
-    setTimeout(function () {
+    var SUPPORTED = {
 
-        location.href = "jb.html";
+        1302: 1,
+        1304: 1,
+        1350: 1,
+        1352: 1
 
-    }, 400);
-
-}
-
-
-start.addEventListener(
-    "click",
-    openHost
-);
+    };
 
 
-/*
- * Enter / X حسب طريقة
- * إرسال المتصفح للزر.
- */
+    var key = null;
 
-document.addEventListener(
-    "keydown",
-    function (event) {
+    var fwnum = null;
 
-        if (
-            event.key === "Enter" ||
-            event.key === " "
-        ) {
 
-            if (!start.disabled) {
-                openHost();
-            }
+    /*
+     * قراءة Firmware من PS4
+     */
+
+    var m =
+        /PlayStation\s+4[\/ ](\d+)\.(\d+)/
+        .exec(
+            navigator.userAgent
+        );
+
+
+    if (m) {
+
+        var ms =
+            parseInt(
+                m[2],
+                16
+            ).toString(16);
+
+
+        if (ms.length < 2) {
+
+            ms =
+                "0" + ms;
 
         }
 
+
+        key =
+            m[1] +
+            "." +
+            ms;
+
+
+        fwnum =
+            parseInt(
+                m[1],
+                10
+            ) * 100 +
+
+            parseInt(
+                ms,
+                10
+            );
+
     }
-);
 
 
-/*
- * منع تحريك الصفحة بسبب drift.
- */
+    /*
+     * force=1 يسمح بالدخول
+     * حتى لو لم يتعرف على Firmware.
+     */
 
-document.addEventListener(
-    "touchmove",
-    function (event) {
-        event.preventDefault();
-    },
-    {
-        passive: false
+    var forced =
+        params.get(
+            "force"
+        ) === "1";
+
+
+    var supported =
+        forced ||
+
+        (
+            fwnum !== null &&
+            SUPPORTED[fwnum] === 1
+        );
+
+
+    detEl.innerHTML =
+
+        "firmware <b>" +
+
+        (
+            key ||
+            "unknown"
+        ) +
+
+        "</b>" +
+
+        (
+            supported
+
+                ? " &middot; <b>supported</b>"
+
+                : " &middot; not in this build's kernel table"
+        );
+
+
+    /*
+     * صفحة التشغيل
+     */
+
+    var target =
+        "jb.html" +
+        location.search;
+
+
+    function go() {
+
+        setState(
+            "RUNNING",
+            "warn"
+        );
+
+        location.replace(
+            target
+        );
+
     }
-);
+
+
+    /*
+     * انتظار ضغطة المستخدم
+     */
+
+    function waitForTap(
+        msg,
+        action
+    ) {
+
+        setState(
+            msg,
+            "warn"
+        );
+
+
+        function fire() {
+
+            window.removeEventListener(
+                "click",
+                fire
+            );
+
+            window.removeEventListener(
+                "keydown",
+                fire
+            );
+
+
+            action();
+
+        }
+
+
+        window.addEventListener(
+            "click",
+            fire
+        );
+
+
+        window.addEventListener(
+            "keydown",
+            fire
+        );
+
+    }
+
+
+    /*
+     * Firmware غير مدعوم
+     */
+
+    if (!supported) {
+
+        setState(
+            "UNSUPPORTED FIRMWARE",
+            "bad"
+        );
+
+
+        waitForTap(
+            "اخرج، اطفئ الإنترنت وعُد",
+            go
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+     * AppCache
+     *
+     * هذا الجزء أبقيته على
+     * منطق النسخة القديمة.
+     */
+
+    var ac =
+        window.applicationCache;
+
+
+    if (
+
+        !ac ||
+
+        !document.documentElement
+            .hasAttribute(
+                "manifest"
+            )
+
+    ) {
+
+        go();
+
+
+    } else if (
+        !navigator.onLine
+    ) {
+
+        setCache(
+            "OFFLINE — FROM CACHE",
+            true
+        );
+
+
+        go();
+
+
+    } else if (
+        ac.status === ac.IDLE
+    ) {
+
+        setCache(
+            "CACHED",
+            true
+        );
+
+
+        go();
+
+
+    } else if (
+        ac.status === ac.UPDATEREADY
+    ) {
+
+        try {
+
+            ac.swapCache();
+
+        } catch (e) {}
+
+
+        setCache(
+            "UPDATE DOWNLOADED",
+            true
+        );
+
+
+        waitForTap(
+            "اخرج، اطفئ الإنترنت وعُد",
+            function () {
+
+                location.reload();
+
+            }
+        );
+
+
+    } else {
+
+        /*
+         * الكاش قيد التحميل
+         */
+
+        setCache(
+            "CACHING..."
+        );
+
+
+        ac.addEventListener(
+
+            "downloading",
+
+            function () {
+
+                setCache(
+                    "CACHING..."
+                );
+
+            },
+
+            false
+        );
+
+
+        ac.addEventListener(
+
+            "progress",
+
+            function (e) {
+
+                if (
+                    e &&
+                    e.total
+                ) {
+
+                    setCache(
+
+                        "CACHING " +
+
+                        Math.round(
+                            (
+                                e.loaded /
+                                e.total
+                            ) * 100
+                        ) +
+
+                        "%"
+
+                    );
+
+                }
+
+            },
+
+            false
+        );
+
+
+        /*
+         * اكتمل التخزين
+         */
+
+        ac.addEventListener(
+
+            "cached",
+
+            function () {
+
+                setCache(
+                    "CACHED FOR OFFLINE USE",
+                    true
+                );
+
+
+                waitForTap(
+
+                    "اخرج، اطفئ الإنترنت وعُد",
+
+                    go
+
+                );
+
+            },
+
+            false
+        );
+
+
+        /*
+         * تحديث جديد اكتمل
+         */
+
+        ac.addEventListener(
+
+            "updateready",
+
+            function () {
+
+                try {
+
+                    ac.swapCache();
+
+                } catch (e) {}
+
+
+                setCache(
+
+                    "UPDATE DOWNLOADED",
+
+                    true
+
+                );
+
+
+                waitForTap(
+
+                    "اخرج، اطفئ الإنترنت وعُد",
+
+                    function () {
+
+                        location.reload();
+
+                    }
+
+                );
+
+            },
+
+            false
+        );
+
+
+        /*
+         * ماكو تحديث
+         */
+
+        ac.addEventListener(
+
+            "noupdate",
+
+            function () {
+
+                setCache(
+
+                    "CACHED — OFFLINE READY",
+
+                    true
+
+                );
+
+
+                go();
+
+            },
+
+            false
+        );
+
+
+        /*
+         * خطأ بالكاش
+         */
+
+        ac.addEventListener(
+
+            "error",
+
+            function () {
+
+                setCache(
+                    "CACHE UNAVAILABLE"
+                );
+
+
+                waitForTap(
+
+                    "اخرج، اطفئ الإنترنت وعُد",
+
+                    go
+
+                );
+
+            },
+
+            false
+        );
+
+
+        /*
+         * الكاش صار obsolete
+         */
+
+        ac.addEventListener(
+
+            "obsolete",
+
+            function () {
+
+                setCache(
+                    "CACHE OBSOLETE"
+                );
+
+
+                waitForTap(
+
+                    "اخرج، اطفئ الإنترنت وعُد",
+
+                    go
+
+                );
+
+            },
+
+            false
+        );
+
+    }
 
 })();
+
 </script>
 
 </body>
+
 </html>
