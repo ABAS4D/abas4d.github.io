@@ -1,53 +1,201 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0"
+>
+
 <title>ABAS4D - Jailbreak</title>
+
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;width:100%;min-height:100%;background:#0a0c10 url('bg.jpg') no-repeat center center fixed;background-size:cover;color:#e6ebf2;font-family:"Segoe UI",Tahoma,Arial,sans-serif}
-body{min-height:100vh;display:flex;align-items:center;justify-content:center}
-.overlay{position:fixed;inset:0;background:rgba(10,12,16,.75);z-index:1}
-#wrap{position:relative;z-index:2;width:90%;max-width:460px;padding:30px 24px;margin:20px auto;background:rgba(20,24,33,.94);border:1px solid rgba(255,255,255,.15);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.7);text-align:center}
-.brand-header{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px}
-.brand-header img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #00ff88;box-shadow:0 0 12px rgba(0,255,136,.4)}
-.brand-header b{font-size:26px;font-weight:800;letter-spacing:2px;color:#fff}
-.sub-name{font-size:16px;color:#8b95a3;margin:0 0 24px;font-weight:600}
-.status-row{display:flex;align-items:center;justify-content:center;gap:14px;min-height:58px}
-#msg{font-size:26px;font-weight:800;letter-spacing:1px;color:#fff;margin:0;min-height:38px}
-.spinner{width:30px;height:30px;border-radius:50%;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;border-right-color:#fff;animation:spin .8s linear infinite;flex:0 0 auto}
-@keyframes spin{to{transform:rotate(360deg)}}
-body.done .spinner,body.fail .spinner{display:none}
-body.done #msg{color:#39e879}
-body.fail #msg{color:#ff3b3b}
-#salawat{display:none;margin-top:12px;color:#39e879;font-size:16px;font-weight:700}
-body.done #salawat{display:block}
-#state,#log,#out{display:none}
+
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    background:#000 url("bg.jpg") center/cover no-repeat;
+    font-family:Arial,Tahoma,sans-serif;
+    color:#fff;
+}
+
+body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+}
+
+#wrap{
+    position:relative;
+    z-index:2;
+    width:90%;
+    max-width:450px;
+    padding:30px 20px;
+    text-align:center;
+    background:rgba(15,15,15,.94);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.7);
+}
+
+.logo{
+    width:65px;
+    height:65px;
+    object-fit:cover;
+    border-radius:50%;
+    margin-bottom:12px;
+}
+
+.brand{
+    font-size:27px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+.name{
+    margin-top:5px;
+    color:#999;
+    font-size:15px;
+}
+
+.status{
+    margin-top:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:13px;
+    min-height:45px;
+}
+
+#msg{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.spinner{
+    width:28px;
+    height:28px;
+    border:4px solid rgba(255,255,255,.25);
+    border-top-color:#fff;
+    border-right-color:#fff;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+body.done .spinner,
+body.fail .spinner{
+    display:none;
+}
+
+body.done #msg{
+    color:#39e879;
+}
+
+body.fail #msg{
+    color:#ff3b3b;
+}
+
+#salawat{
+    display:none;
+    margin-top:12px;
+    color:#39e879;
+    font-weight:bold;
+    font-size:16px;
+}
+
+body.done #salawat{
+    display:block;
+}
+
+/*
+هذه العناصر مطلوبة من jb.js
+ولا نحذفها حتى لو ما تظهر للمستخدم.
+*/
+
+#state{
+    display:none;
+}
+
+#log{
+    display:none;
+}
+
+#out{
+    display:none;
+}
+
 </style>
+
 </head>
+
 <body>
+
 <div class="overlay"></div>
+
 <div id="wrap">
-  <div class="brand-header">
-    <img src="logo.png" alt="الشعار" onerror="this.style.display='none'">
-    <b>ABAS4D</b>
-  </div>
-  <div class="sub-name">عباس محمود</div>
-  <div class="status-row">
-    <div class="spinner" aria-label="جاري التشغيل"></div>
-    <div id="msg">جاري التشغيل...</div>
-  </div>
-  <div id="salawat">صلي على محمد (ﷺ)</div>
-  <div id="state"></div><div id="log"></div><div id="out"></div>
+
+    <img
+        src="logo.png"
+        class="logo"
+        alt=""
+        onerror="this.style.display='none'"
+    >
+
+    <div class="brand">
+        ABAS4D
+    </div>
+
+    <div class="name">
+        عباس محمود
+    </div>
+
+    <div class="status">
+
+        <div class="spinner"></div>
+
+        <div id="msg">
+            جاري التشغيل...
+        </div>
+
+    </div>
+
+    <div id="salawat">
+        صلي على محمد (ﷺ)
+    </div>
+
+    <div id="state"></div>
+    <div id="log"></div>
+    <div id="out"></div>
+
 </div>
-<script>
-(function(){
-  var origLog=console.log,origErr=console.error;
-  console.log=function(){origLog.apply(console,arguments)};
-  console.error=function(){origErr.apply(console,arguments)};
-})();
-</script>
-<script type="module" src="jb.js"></script>
+
+<!-- لا نضيف أي Worker wrapper هنا -->
+<script
+    type="module"
+    src="jb.js"
+></script>
+
 </body>
+
 </html>
