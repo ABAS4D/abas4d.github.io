@@ -2,137 +2,219 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>ABAS4D - Jailbreak</title>
 
 <style>
-*{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  min-height:100%;
-  background:#0a0c10 url("bg.jpg") no-repeat center center fixed;
-  background-size:cover;
-  color:#e6ebf2;
-  font-family:"Segoe UI",Tahoma,Arial,sans-serif
+* {
+  box-sizing: border-box;
 }
 
-body{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(10,12,16,.78);
-  z-index:1
+body {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    #0a0c10 url("bg.jpg")
+    center center / cover no-repeat;
+
+  color: #e6ebf2;
+
+  font-family:
+    "Segoe UI",
+    Tahoma,
+    Arial,
+    sans-serif;
+
+  touch-action: none;
+  overscroll-behavior: none;
 }
 
-#wrap{
-  position:relative;
-  z-index:2;
-  width:90%;
-  max-width:460px;
-  padding:30px 24px;
-  margin:20px auto;
-  background:rgba(20,24,33,.94);
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.7);
-  text-align:center
+/* طبقة الخلفية */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 12, 16, .78);
+  pointer-events: none;
 }
 
-.brand-header{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  margin-bottom:18px
+/* الصندوق ثابت تماماً بالنص */
+#wrap {
+  position: fixed;
+
+  left: 50%;
+  top: 50%;
+
+  width: 90%;
+  max-width: 460px;
+
+  transform: translate(-50%, -50%);
+
+  padding: 30px 24px;
+
+  background: rgba(20, 24, 33, .94);
+
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 16px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.7);
+
+  text-align: center;
+
+  z-index: 2;
 }
 
-.brand-header img{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #00ff88
+/* العنوان */
+.brand-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-bottom: 18px;
 }
 
-.brand-header b{
-  font-size:26px;
-  font-weight:800;
-  letter-spacing:2px
+.brand-header img {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 2px solid #00ff88;
 }
 
-#firmware{
-  color:#8b95a3;
-  font-size:15px;
-  margin-bottom:25px
+.brand-header b {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 2px;
 }
 
-#msg{
-  font-size:23px;
-  font-weight:800;
-  margin:15px 0;
-  min-height:34px
+/* إصدار النظام */
+#firmware {
+  color: #8b95a3;
+  font-size: 15px;
+  margin-bottom: 25px;
 }
 
-#details{
-  font-size:13px;
-  color:#8b95a3;
-  min-height:40px;
-  line-height:1.7
+/* الرسالة */
+#msg {
+  font-size: 23px;
+  font-weight: 800;
+
+  margin: 15px 0;
+
+  min-height: 34px;
 }
 
-button{
-  display:block;
-  width:100%;
-  margin-top:22px;
-  padding:15px;
-  border:0;
-  border-radius:10px;
-  background:#00c875;
-  color:#07120d;
-  font-size:20px;
-  font-weight:800;
-  cursor:pointer
+/* التفاصيل */
+#details {
+  font-size: 13px;
+
+  color: #8b95a3;
+
+  min-height: 40px;
+
+  line-height: 1.7;
 }
 
-button:disabled{
-  opacity:.45;
-  cursor:default
+/* زر البدء */
+button {
+  display: block;
+
+  width: 100%;
+
+  margin-top: 22px;
+
+  padding: 15px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: #00c875;
+
+  color: #07120d;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  cursor: pointer;
 }
 
-#spinner{
-  display:none;
-  width:30px;
-  height:30px;
-  margin:18px auto;
-  border-radius:50%;
-  border:4px solid rgba(255,255,255,.2);
-  border-top-color:#fff;
-  border-right-color:#fff;
-  animation:spin .8s linear infinite
+button:disabled {
+  opacity: .45;
+  cursor: default;
 }
 
-@keyframes spin{
-  to{transform:rotate(360deg)}
+/* دائرة التحميل */
+#spinner {
+  display: none;
+
+  width: 30px;
+  height: 30px;
+
+  margin: 18px auto;
+
+  border-radius: 50%;
+
+  border: 4px solid rgba(255,255,255,.2);
+
+  border-top-color: #fff;
+  border-right-color: #fff;
+
+  animation: spin .8s linear infinite;
 }
 
-.ok{color:#39e879}
-.warn{color:#ffd400}
-.bad{color:#ff5252}
+/* دوران الدائرة فقط */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
 
-#salawat{
-  display:none;
-  margin-top:15px;
-  color:#39e879;
-  font-weight:700
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* الألوان */
+.ok {
+  color: #39e879;
+}
+
+.warn {
+  color: #ffd400;
+}
+
+.bad {
+  color: #ff5252;
+}
+
+/* الصلاة */
+#salawat {
+  display: none;
+
+  margin-top: 15px;
+
+  color: #39e879;
+
+  font-weight: 700;
 }
 </style>
 </head>
@@ -144,14 +226,24 @@ button:disabled{
 <div id="wrap">
 
   <div class="brand-header">
-    <img src="logo.png" alt="ABAS4D"
-         onerror="this.style.display='none'">
+
+    <img
+      src="logo.png"
+      alt="ABAS4D"
+      onerror="this.style.display='none'"
+    >
+
     <b>ABAS4D</b>
+
   </div>
 
-  <div id="firmware">جاري فحص النظام...</div>
+  <div id="firmware">
+    جاري فحص النظام...
+  </div>
 
-  <div id="msg">انتظر...</div>
+  <div id="msg">
+    انتظر...
+  </div>
 
   <div id="spinner"></div>
 
@@ -167,311 +259,512 @@ button:disabled{
 
 </div>
 
+
 <script>
-(function(){
+(function () {
 
-"use strict";
+  "use strict";
 
-const msg = document.getElementById("msg");
-const firmware = document.getElementById("firmware");
-const details = document.getElementById("details");
-const start = document.getElementById("start");
-const spinner = document.getElementById("spinner");
-const salawat = document.getElementById("salawat");
+  const msg =
+    document.getElementById("msg");
 
-function text(el,value,cls){
-  el.textContent = value;
-  el.className = cls || "";
-}
+  const firmware =
+    document.getElementById("firmware");
 
-function getFirmware(){
+  const details =
+    document.getElementById("details");
 
-  const m =
-    /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(
-      navigator.userAgent
-    );
+  const start =
+    document.getElementById("start");
 
-  if(!m) return null;
+  const spinner =
+    document.getElementById("spinner");
 
-  const major = parseInt(m[1],10);
-  const minorRaw = m[2];
-  const minor = parseInt(minorRaw,16);
+  const salawat =
+    document.getElementById("salawat");
 
-  return {
-    key: major + "." +
-      (minor < 16
-        ? ("0"+minor.toString(16)).slice(-2)
-        : minor.toString(16)),
-    num: major * 100 + minor,
-    major: major,
-    minor: minor
-  };
-}
 
-const fw = getFirmware();
+  function setText(element, value, cls) {
 
-const table = {
-  1302:{
-    patch:"patches/1302.bin",
-    payload:"payload2.bin"
-  },
-  1304:{
-    patch:"patches/1302.bin",
-    payload:"payload2.bin"
-  },
-  1350:{
-    patch:"patches/1350.bin",
-    payload:"payload2.bin"
-  },
-  1352:{
-    patch:"patches/1352.bin",
-    payload:"goldhen.bin"
-  }
-};
+    element.textContent = value;
 
-if(!fw){
-
-  text(firmware,"تعذر معرفة إصدار النظام","bad");
-  text(msg,"النظام غير معروف","bad");
-  text(details,
-       "لم يتم تشغيل أي ملف.",
-       "bad");
-
-  return;
-}
-
-firmware.textContent =
-  "Firmware: " + fw.key;
-
-const cfg = table[fw.num];
-
-if(!cfg){
-
-  text(msg,"الإصدار غير موجود بالجدول","bad");
-
-  text(
-    details,
-    "لم يتم تشغيل jb.js حفاظاً على الجهاز.",
-    "bad"
-  );
-
-  return;
-}
-
-text(
-  msg,
-  "جاري فحص الملفات...",
-  "warn"
-);
-
-details.innerHTML =
-  "Patch: " + cfg.patch +
-  "<br>Payload: " + cfg.payload;
-
-async function fetchBinary(path){
-
-  const r = await fetch(
-    path + "?preflight=" + Date.now(),
-    {
-      cache:"no-store"
-    }
-  );
-
-  if(!r.ok)
-    throw new Error(
-      path + " HTTP " + r.status
-    );
-
-  return new Uint8Array(
-    await r.arrayBuffer()
-  );
-}
-
-async function preflight(){
-
-  const patch =
-    await fetchBinary(cfg.patch);
-
-  const payload =
-    await fetchBinary(cfg.payload);
-
-  /*
-   * ملفات patch الحالية عندك:
-   * 632 byte
-   * وتحتوي 10 مواقع من نوع:
-   * C6 81 xx xx xx xx EB
-   */
-
-  if(patch.length !== 632){
-
-    throw new Error(
-      "حجم patch = " +
-      patch.length +
-      " والمتوقع 632"
-    );
+    element.className =
+      cls || "";
   }
 
-  let sites = 0;
 
-  for(let i=0;i+6<patch.length;i++){
+  /* معرفة إصدار PS4 */
 
-    if(
-      patch[i] === 0xc6 &&
-      patch[i+1] === 0x81 &&
-      patch[i+6] === 0xeb
-    ){
-      sites++;
-    }
+  function getFirmware() {
+
+    const m =
+      /PlayStation\s+4[\/ ](\d+)\.(\d+)/
+      .exec(navigator.userAgent);
+
+    if (!m)
+      return null;
+
+    const major =
+      parseInt(m[1], 10);
+
+    const minorRaw =
+      m[2];
+
+    const minor =
+      parseInt(minorRaw, 16);
+
+    return {
+
+      key:
+        major + "." +
+        (
+          minor < 16
+            ? ("0" + minor.toString(16))
+                .slice(-2)
+            : minor.toString(16)
+        ),
+
+      num:
+        major * 100 + minor,
+
+      major:
+        major,
+
+      minor:
+        minor
+    };
   }
 
-  if(sites !== 10){
 
-    throw new Error(
-      "عدد مواقع patch = " +
-      sites +
-      " والمتوقع 10"
-    );
-  }
+  const fw =
+    getFirmware();
 
-  if(payload.length !== 293120){
 
-    throw new Error(
-      "حجم payload = " +
-      payload.length +
-      " والمتوقع 293120"
-    );
-  }
+  /* إذا تعذر معرفة الإصدار */
 
-  if(payload[0] !== 0xe9){
+  if (!fw) {
 
-    throw new Error(
-      "بداية payload غير صحيحة"
-    );
-  }
-
-  return {
-    patchBytes:patch.length,
-    patchSites:sites,
-    payloadBytes:payload.length
-  };
-}
-
-preflight()
-.then(function(r){
-
-  text(
-    msg,
-    "الملفات جاهزة",
-    "ok"
-  );
-
-  details.innerHTML =
-    "Firmware: " + fw.key +
-    "<br>Patch: " + cfg.patch +
-    " — 632 bytes — 10 sites" +
-    "<br>Payload: " + cfg.payload +
-    " — 293120 bytes";
-
-  start.disabled = false;
-
-  /*
-   * لا نشغل jb.js تلقائياً.
-   * لازم ضغط X / زر.
-   */
-
-  text(
-    start,
-    "اضغط X للبدء",
-    ""
-  );
-
-})
-.catch(function(e){
-
-  text(
-    msg,
-    "فشل فحص الملفات",
-    "bad"
-  );
-
-  details.textContent =
-    e && e.message
-      ? e.message
-      : String(e);
-
-  start.disabled = true;
-});
-
-function launch(){
-
-  if(start.disabled)
-    return;
-
-  start.disabled = true;
-
-  spinner.style.display = "block";
-
-  text(
-    msg,
-    "جاري التشغيل...",
-    "warn"
-  );
-
-  salawat.style.display = "block";
-
-  /*
-   * jb.js هو الملف الأصلي الموجود عندك.
-   * لا نغير داخله أي primitive/kernel operation.
-   */
-
-  const s =
-    document.createElement("script");
-
-  s.type = "module";
-
-  s.src =
-    "jb.js?run=" + Date.now();
-
-  s.onerror = function(){
-
-    spinner.style.display = "none";
-
-    text(
-      msg,
-      "تعذر تحميل jb.js",
+    setText(
+      firmware,
+      "تعذر معرفة إصدار النظام",
       "bad"
     );
 
-    start.disabled = false;
-  };
+    setText(
+      msg,
+      "النظام غير معروف",
+      "bad"
+    );
 
-  document.body.appendChild(s);
-}
+    setText(
+      details,
+      "لم يتم تشغيل أي ملف.",
+      "bad"
+    );
 
-start.addEventListener(
-  "click",
-  launch
-);
+    return;
+  }
 
-document.addEventListener(
-  "keydown",
-  function(e){
 
-    /*
-     * زر X على يد PS4 يصل عادة كـ Enter
-     * في بعض صفحات WebKit.
-     */
+  firmware.textContent =
+    "Firmware: " + fw.key;
 
-    if(
-      e.key === "Enter" ||
-      e.key === " "
-    ){
-      if(!start.disabled)
-        launch();
+
+  /*
+   * ملفات كل إصدار
+   */
+
+  const table = {
+
+    1302: {
+      patch: "patches/1302.bin",
+      payload: "payload2.bin"
+    },
+
+    1304: {
+      patch: "patches/1302.bin",
+      payload: "payload2.bin"
+    },
+
+    1350: {
+      patch: "patches/1350.bin",
+      payload: "payload2.bin"
+    },
+
+    1352: {
+      patch: "patches/1352.bin",
+      payload: "goldhen.bin"
     }
 
+  };
+
+
+  const cfg =
+    table[fw.num];
+
+
+  /* إصدار غير موجود */
+
+  if (!cfg) {
+
+    setText(
+      msg,
+      "الإصدار غير موجود بالجدول",
+      "bad"
+    );
+
+    setText(
+      details,
+      "لم يتم تشغيل jb.js حفاظاً على الجهاز.",
+      "bad"
+    );
+
+    return;
   }
-);
+
+
+  setText(
+    msg,
+    "جاري فحص الملفات...",
+    "warn"
+  );
+
+
+  details.innerHTML =
+    "Patch: " +
+    cfg.patch +
+    "<br>" +
+    "Payload: " +
+    cfg.payload;
+
+
+  /*
+   * تحميل الملف وفحص وجوده
+   */
+
+  async function fetchBinary(path) {
+
+    const response =
+      await fetch(
+        path +
+        "?preflight=" +
+        Date.now(),
+        {
+          cache: "no-store"
+        }
+      );
+
+    if (!response.ok) {
+
+      throw new Error(
+        path +
+        " HTTP " +
+        response.status
+      );
+    }
+
+    return new Uint8Array(
+      await response.arrayBuffer()
+    );
+  }
+
+
+  /*
+   * فحص الملفات قبل التشغيل
+   */
+
+  async function preflight() {
+
+    const patch =
+      await fetchBinary(
+        cfg.patch
+      );
+
+    const payload =
+      await fetchBinary(
+        cfg.payload
+      );
+
+
+    /*
+     * حجم ملفات patch
+     */
+
+    if (patch.length !== 632) {
+
+      throw new Error(
+        "حجم patch = " +
+        patch.length +
+        " والمتوقع 632"
+      );
+    }
+
+
+    /*
+     * عد مواقع patch
+     */
+
+    let sites = 0;
+
+    for (
+      let i = 0;
+      i + 6 < patch.length;
+      i++
+    ) {
+
+      if (
+        patch[i] === 0xc6 &&
+        patch[i + 1] === 0x81 &&
+        patch[i + 6] === 0xeb
+      ) {
+
+        sites++;
+      }
+    }
+
+
+    if (sites !== 10) {
+
+      throw new Error(
+        "عدد مواقع patch = " +
+        sites +
+        " والمتوقع 10"
+      );
+    }
+
+
+    /*
+     * حجم payload
+     */
+
+    if (
+      payload.length !== 293120
+    ) {
+
+      throw new Error(
+        "حجم payload = " +
+        payload.length +
+        " والمتوقع 293120"
+      );
+    }
+
+
+    /*
+     * أول byte للـpayload
+     */
+
+    if (
+      payload[0] !== 0xe9
+    ) {
+
+      throw new Error(
+        "بداية payload غير صحيحة"
+      );
+    }
+
+
+    return {
+
+      patchBytes:
+        patch.length,
+
+      patchSites:
+        sites,
+
+      payloadBytes:
+        payload.length
+    };
+  }
+
+
+  /*
+   * بدء الفحص
+   */
+
+  preflight()
+
+    .then(function (result) {
+
+      setText(
+        msg,
+        "الملفات جاهزة",
+        "ok"
+      );
+
+
+      details.innerHTML =
+        "Firmware: " +
+        fw.key +
+
+        "<br>Patch: " +
+        cfg.patch +
+        " — 632 bytes — 10 sites" +
+
+        "<br>Payload: " +
+        cfg.payload +
+        " — 293120 bytes";
+
+
+      start.disabled =
+        false;
+
+
+      start.textContent =
+        "اضغط X للبدء";
+
+    })
+
+
+    .catch(function (error) {
+
+      setText(
+        msg,
+        "فشل فحص الملفات",
+        "bad"
+      );
+
+
+      details.textContent =
+        error &&
+        error.message
+          ? error.message
+          : String(error);
+
+
+      start.disabled =
+        true;
+
+    });
+
+
+  /*
+   * تشغيل jb.js
+   */
+
+  function launch() {
+
+    if (start.disabled)
+      return;
+
+
+    start.disabled =
+      true;
+
+
+    spinner.style.display =
+      "block";
+
+
+    setText(
+      msg,
+      "جاري التشغيل...",
+      "warn"
+    );
+
+
+    salawat.style.display =
+      "block";
+
+
+    /*
+     * تحميل jb.js
+     * بدون تغيير محتواه.
+     */
+
+    const script =
+      document.createElement(
+        "script"
+      );
+
+
+    script.type =
+      "module";
+
+
+    script.src =
+      "jb.js?run=" +
+      Date.now();
+
+
+    script.onerror =
+      function () {
+
+        spinner.style.display =
+          "none";
+
+
+        setText(
+          msg,
+          "تعذر تحميل jb.js",
+          "bad"
+        );
+
+
+        start.disabled =
+          false;
+
+      };
+
+
+    document.body.appendChild(
+      script
+    );
+  }
+
+
+  /*
+   * الضغط بالماوس/اللمس
+   */
+
+  start.addEventListener(
+    "click",
+    launch
+  );
+
+
+  /*
+   * زر X / Enter
+   */
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+
+        if (
+          !start.disabled
+        ) {
+
+          launch();
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /*
+   * منع سحب الصفحة
+   */
+
+  document.addEventListener(
+    "touchmove",
+    function (event) {
+
+      event.preventDefault();
+
+    },
+    {
+      passive: false
+    }
+  );
+
 
 })();
 </script>
