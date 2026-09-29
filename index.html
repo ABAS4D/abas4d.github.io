@@ -1,314 +1,210 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" manifest="cache.appcache">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1">
+
 <title>ABAS4D HOST</title>
 
 <style>
 *{box-sizing:border-box}
 
 html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    background:#000 url("bg.jpg") center/cover no-repeat;
-    font-family:Arial,Tahoma,sans-serif;
-    color:#fff;
+ margin:0;
+ padding:0;
+ width:100%;
+ min-height:100%;
+ background:#0a0c10 url("bg.jpg")
+ center/cover fixed no-repeat;
+ color:#eee;
+ font-family:Arial,Tahoma,sans-serif
 }
 
 body{
-    display:flex;
-    align-items:center;
-    justify-content:center;
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center
 }
 
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.72);
-}
-
-.card{
-    position:relative;
-    z-index:2;
-    width:90%;
-    max-width:450px;
-    padding:30px 20px;
-    text-align:center;
-    background:rgba(15,15,15,.94);
-    border:1px solid rgba(255,255,255,.15);
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,.7);
+.box{
+ width:90%;
+ max-width:450px;
+ padding:30px 24px;
+ text-align:center;
+ background:rgba(20,24,33,.95);
+ border-radius:16px;
+ border:1px solid rgba(255,255,255,.15)
 }
 
 .logo{
-    width:70px;
-    height:70px;
-    object-fit:cover;
-    border-radius:50%;
-    margin-bottom:12px;
+ width:60px;
+ height:60px;
+ border-radius:50%;
+ margin-bottom:12px
 }
 
-.title{
-    font-size:27px;
-    font-weight:bold;
-    letter-spacing:2px;
+h1{
+ margin:5px 0 20px;
+ font-size:28px
 }
 
-#state{
-    margin-top:18px;
-    font-size:20px;
-    font-weight:bold;
+#msg{
+ font-size:22px;
+ font-weight:bold;
+ margin:15px 0
 }
 
-#det{
-    margin-top:8px;
-    color:#aaa;
-    font-size:13px;
+#fw{
+ color:#999;
+ margin-bottom:20px
 }
 
-#cache{
-    margin-top:15px;
-    color:#ffd400;
-    font-weight:bold;
-    font-size:16px;
+button{
+ width:100%;
+ padding:15px;
+ border:0;
+ border-radius:10px;
+ background:#00c875;
+ font-size:20px;
+ font-weight:bold
 }
 
-.footer{
-    margin-top:22px;
-    padding-top:12px;
-    border-top:1px solid rgba(255,255,255,.1);
-    color:#777;
-    font-size:12px;
-}
-
-.green{color:#39e879!important}
-.red{color:#ff4444!important}
-.yellow{color:#ffd400!important}
+.bad{color:#ff5555}
+.ok{color:#39e879}
 </style>
 </head>
 
 <body>
 
-<div class="overlay"></div>
+<div class="box">
 
-<div class="card">
+<img
+ src="logo.png"
+ class="logo"
+ onerror="this.style.display='none'">
 
-    <img src="logo.png" class="logo" onerror="this.style.display='none'">
+<h1>ABAS4D</h1>
 
-    <div class="title">ABAS4D</div>
+<div id="fw">
+جاري التحقق...
+</div>
 
-    <div id="state">جاري التحقق...</div>
+<div id="msg">
+انتظر...
+</div>
 
-    <div id="det"></div>
-
-    <div id="cache"></div>
-
-    <div class="footer">
-        © 2026 ABAS4D — عباس محمود
-    </div>
+<button id="go" style="display:none">
+اضغط X للدخول
+</button>
 
 </div>
 
 <script>
+
 (function(){
 
-    const state = document.getElementById("state");
-    const det = document.getElementById("det");
-    const cache = document.getElementById("cache");
+const fwEl =
+document.getElementById("fw");
 
-    const SUPPORTED = {
-        1302:true,
-        1304:true,
-        1350:true,
-        1352:true
-    };
+const msg =
+document.getElementById("msg");
 
-    let key = null;
-    let fw = null;
+const go =
+document.getElementById("go");
 
-    const m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(
-        navigator.userAgent
-    );
+const m =
+/PlayStation\s+4[\/ ](\d+)\.(\d+)/
+.exec(navigator.userAgent);
 
-    if(m){
+if(!m){
 
-        let minor = parseInt(m[2],16).toString(16);
+ fwEl.textContent =
+ "Firmware غير معروف";
 
-        if(minor.length < 2)
-            minor = "0" + minor;
+ msg.textContent =
+ "لم يتم التشغيل";
 
-        key = m[1] + "." + minor;
+ msg.className="bad";
 
-        fw =
-            parseInt(m[1],10) * 100 +
-            parseInt(minor,10);
-    }
+ return;
+}
 
-    det.innerHTML =
-        "النظام: <b>" +
-        (key || "غير معروف") +
-        "</b>";
+const major =
+parseInt(m[1],10);
 
-    function run(){
+const minor =
+parseInt(m[2],16);
 
-        state.textContent =
-            "جاري تشغيل الجلبريك...";
+const key =
+major+"."+
+(minor<16
+ ? ("0"+minor.toString(16)).slice(-2)
+ : minor.toString(16));
 
-        state.className = "yellow";
+const num =
+major*100+minor;
 
-        location.replace(
-            "jb.html" + location.search
-        );
-    }
+const supported =
+{
+ 1302:true,
+ 1304:true,
+ 1350:true,
+ 1352:true
+};
 
-    if(
-        fw !== null &&
-        SUPPORTED[fw]
-    ){
+fwEl.textContent =
+"Firmware: "+key;
 
-        if(!window.applicationCache){
+if(!supported[num]){
 
-            cache.textContent =
-                "جاهز";
+ msg.textContent =
+ "الإصدار غير مدعوم";
 
-            cache.className =
-                "green";
+ msg.className="bad";
 
-            run();
+ return;
+}
 
-            return;
-        }
+msg.textContent =
+ "جاهز";
 
-        const ac =
-            window.applicationCache;
+msg.className="ok";
 
-        if(
-            ac.status ===
-            window.applicationCache.IDLE
-        ){
+go.style.display="block";
 
-            cache.textContent =
-                "جاهز";
+function openHost(){
 
-            cache.className =
-                "green";
+ go.disabled=true;
 
-            run();
+ location.href =
+ "jb.html";
 
-            return;
-        }
+}
 
-        cache.textContent =
-            "جاري التخزين المؤقت...";
+go.addEventListener(
+ "click",
+ openHost
+);
 
-        ac.addEventListener(
-            "cached",
-            function(){
+document.addEventListener(
+ "keydown",
+ function(e){
 
-                cache.textContent =
-                    "اكتمل التخزين المؤقت";
+  if(
+   e.key==="Enter" ||
+   e.key===" "
+  ){
+   openHost();
+  }
 
-                cache.className =
-                    "green";
-
-                setTimeout(run,300);
-            },
-            false
-        );
-
-        ac.addEventListener(
-            "noupdate",
-            function(){
-
-                cache.textContent =
-                    "جاهز";
-
-                cache.className =
-                    "green";
-
-                setTimeout(run,300);
-            },
-            false
-        );
-
-        ac.addEventListener(
-            "updateready",
-            function(){
-
-                try{
-                    ac.swapCache();
-                }catch(e){}
-
-                cache.textContent =
-                    "اكتمل التحديث";
-
-                cache.className =
-                    "green";
-
-                setTimeout(
-                    function(){
-                        location.reload();
-                    },
-                    300
-                );
-            },
-            false
-        );
-
-        ac.addEventListener(
-            "error",
-            function(){
-
-                cache.textContent =
-                    "خطأ بالتخزين المؤقت";
-
-                cache.className =
-                    "red";
-
-                setTimeout(run,500);
-            },
-            false
-        );
-
-    }else{
-
-        state.textContent =
-            "النظام غير مدعوم";
-
-        state.className =
-            "red";
-
-        cache.textContent =
-            "اخرج، أطفئ الإنترنت، وعُد ثم اضغط X أو المس الشاشة";
-
-        cache.className =
-            "yellow";
-
-        document.addEventListener(
-            "keydown",
-            function(e){
-
-                if(e.key === "Enter" ||
-                   e.key === "x" ||
-                   e.key === "X"){
-
-                    run();
-                }
-
-            }
-        );
-
-        document.addEventListener(
-            "click",
-            run,
-            {once:true}
-        );
-    }
+ }
+);
 
 })();
+
 </script>
 
 </body>
