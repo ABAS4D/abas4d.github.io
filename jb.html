@@ -444,29 +444,20 @@ button:disabled {
 
   async function fetchBinary(path) {
 
-    const response =
-      await fetch(
-        path +
-        "?preflight=" +
-        Date.now(),
-        {
-          cache: "no-store"
-        }
-      );
+  const response = await fetch(path);
 
-    if (!response.ok) {
-
-      throw new Error(
-        path +
-        " HTTP " +
-        response.status
-      );
-    }
-
-    return new Uint8Array(
-      await response.arrayBuffer()
+  if (!response.ok) {
+    throw new Error(
+      path +
+      " HTTP " +
+      response.status
     );
   }
+
+  return new Uint8Array(
+    await response.arrayBuffer()
+  );
+}
 
 
   /*
