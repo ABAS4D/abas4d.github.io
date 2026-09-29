@@ -1,7 +1,5 @@
 CACHE MANIFEST
-# rev 20260929-v13-debug-import
-
-
+# rev 20260929-v15-raw13g-full
 
 CACHE:
 index.html
@@ -13,6 +11,16 @@ int64.js
 mem.js
 core.js
 jb.js
+rpc_worker.js
+payload2.bin
+goldhen.bin
+patches/1302.bin
+patches/1350.bin
+patches/1352.bin
 
 NETWORK:
 *
+
+FALLBACK:
+index.html index.html
+jb.html jb.html
