@@ -1,18 +1,16 @@
 CACHE MANIFEST
-# rev 20260929-v5-full-offline
+# rev 20260929-v6-style-done
 
 CACHE:
 index.html
 jb.html
 logo.png
+bg.jpg
 ps4_offsets.js
 int64.js
 mem.js
 core.js
 jb.js
-rpc_worker.js
-payload2.bin
-goldhen.bin
 
 NETWORK:
 *
