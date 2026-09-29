@@ -3,243 +3,188 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>عباس محمود - ABAS4D</title>
+<title>ABAS4D - عباس محمود</title>
 
 <style>
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-
-  background: #05070a url('bg.jpg') no-repeat center center fixed;
-  background-size: cover;
-
-  color: #e6ebf2;
-
-  font-family:
-    "Segoe UI",
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    Roboto,
-    sans-serif;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
 }
 
 body {
-  min-height: 100vh;
+    min-height: 100vh;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    font-family:
+        Arial,
+        "Segoe UI",
+        sans-serif;
 
-  overflow: hidden;
+    color: #ffffff;
+
+    background:
+        #080b0f
+        url("bg.jpg")
+        no-repeat
+        center
+        center
+        fixed;
+
+    background-size: cover;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
 }
 
 .overlay {
-  position: fixed;
-  inset: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 
-  background:
-    radial-gradient(
-      circle at 50% 35%,
-      rgba(0,255,136,0.08),
-      transparent 35%
-    ),
-    rgba(3,5,8,0.78);
+    background: rgba(0, 0, 0, 0.38);
 
-  z-index: 1;
+    z-index: 1;
 }
 
 #wrap {
-  position: relative;
-  z-index: 2;
+    position: relative;
+    z-index: 2;
 
-  width: 90%;
-  max-width: 470px;
+    width: 90%;
+    max-width: 460px;
 
-  padding: 34px 26px 26px;
+    padding: 30px 24px;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(24,30,40,0.94),
-      rgba(10,14,20,0.91)
-    );
+    text-align: center;
 
-  border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(10, 15, 20, 0.62);
 
-  border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
 
-  text-align: center;
+    border-radius: 18px;
 
-  box-shadow:
-    0 25px 70px rgba(0,0,0,0.75),
-    0 0 35px rgba(0,255,136,0.06);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  animation: cardIn .7s ease;
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.65),
+        0 0 20px rgba(0, 255, 136, 0.08);
 }
 
-#wrap::before {
-  content: "";
+#wrap:before {
+    content: "";
 
-  position: absolute;
+    position: absolute;
 
-  top: 0;
-  left: 12%;
+    top: 0;
+    left: 15%;
 
-  width: 76%;
-  height: 1px;
+    width: 70%;
+    height: 2px;
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      #00ff88,
-      transparent
-    );
+    background: #00ff88;
 
-  opacity: .8;
+    opacity: 0.75;
 }
 
 .brand-header {
-  display: flex;
+    display: flex;
 
-  align-items: center;
-  justify-content: center;
+    align-items: center;
+    justify-content: center;
 
-  gap: 15px;
+    gap: 13px;
 
-  margin-bottom: 7px;
+    margin-bottom: 8px;
 }
 
 .brand-header img {
-  width: 58px;
-  height: 58px;
+    width: 55px;
+    height: 55px;
 
-  border-radius: 50%;
+    border-radius: 50%;
 
-  object-fit: cover;
+    object-fit: cover;
 
-  border: 2px solid #00ff88;
+    border: 2px solid #00ff88;
 
-  box-shadow:
-    0 0 0 4px rgba(0,255,136,0.06),
-    0 0 22px rgba(0,255,136,0.35);
+    box-shadow:
+        0 0 15px rgba(0, 255, 136, 0.35);
 }
 
 .brand-header b {
-  margin: 0;
+    font-size: 27px;
 
-  font-size: 29px;
+    font-weight: bold;
 
-  font-weight: 900;
+    letter-spacing: 2px;
 
-  letter-spacing: 3px;
-
-  color: #fff;
-
-  text-shadow:
-    0 0 18px rgba(255,255,255,0.12);
+    color: #ffffff;
 }
 
 .sub-name {
-  margin: 0 0 24px;
+    margin: 0 0 22px;
 
-  font-size: 17px;
+    font-size: 17px;
 
-  font-weight: 700;
+    font-weight: bold;
 
-  color: #9ca8b8;
-
-  letter-spacing: 1px;
+    color: #d2d8df;
 }
 
 #state {
-  font-size: 21px;
+    min-height: 32px;
 
-  font-weight: 800;
+    margin: 10px 0;
 
-  margin: 12px 0;
+    font-size: 21px;
 
-  min-height: 32px;
+    font-weight: bold;
 
-  color: #7fd0a0;
-
-  text-shadow:
-    0 0 14px rgba(127,208,160,0.18);
+    color: #7fd0a0;
 }
 
 #log {
-  font-size: 13px;
+    margin-top: 14px;
 
-  color: #cbd5e0;
+    padding: 13px;
 
-  margin-top: 14px;
+    max-height: 190px;
 
-  white-space: pre-wrap;
+    overflow-y: auto;
 
-  word-break: break-all;
+    text-align: left;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(0,0,0,0.55),
-      rgba(8,11,15,0.72)
-    );
+    font-size: 13px;
 
-  padding: 14px;
+    line-height: 1.5;
 
-  border-radius: 12px;
+    color: #d4dbe3;
 
-  border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0, 0, 0, 0.38);
 
-  text-align: left;
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
 
-  max-height: 190px;
+    border-radius: 10px;
 
-  overflow-y: auto;
+    white-space: pre-wrap;
 
-  box-shadow:
-    inset 0 0 20px rgba(0,0,0,0.3);
-}
-
-#log::-webkit-scrollbar {
-  width: 5px;
-}
-
-#log::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-#log::-webkit-scrollbar-thumb {
-  background: rgba(0,255,136,0.35);
-  border-radius: 10px;
+    word-break: break-all;
 }
 
 .err {
-  color: #fc8181;
-
-  font-weight: bold;
-}
-
-@keyframes cardIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px) scale(.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+    color: #fc8181;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -250,128 +195,135 @@ body {
 
 <div id="wrap">
 
-  <div class="brand-header">
+    <div class="brand-header">
 
-    <img src="logo.png"
-         alt="Logo"
-         onerror="this.style.display='none'">
+        <img
+            src="logo.png"
+            alt="Logo"
+            onerror="this.style.display='none'"
+        >
 
-    <b>ABAS4D</b>
+        <b>ABAS4D</b>
 
-  </div>
+    </div>
 
-  <div class="sub-name">عباس محمود</div>
+    <div class="sub-name">
+        عباس محمود
+    </div>
 
-  <div id="state">running jailbreak...</div>
+    <div id="state">
+        running jailbreak...
+    </div>
 
-  <div id="log">Starting exploit...</div>
+    <div id="log">
+        Starting exploit...
+    </div>
 
 </div>
 
 <script>
-  (function() {
+(function() {
     var logDiv = document.getElementById("log");
 
     function appendLog(msg, isErr) {
-      if (!logDiv) return;
+        if (!logDiv) return;
 
-      var line = document.createElement("div");
+        var line = document.createElement("div");
 
-      if (isErr)
-        line.className = "err";
+        if (isErr)
+            line.className = "err";
 
-      line.textContent = msg;
+        line.textContent = msg;
 
-      logDiv.appendChild(line);
+        logDiv.appendChild(line);
 
-      logDiv.scrollTop =
-        logDiv.scrollHeight;
+        logDiv.scrollTop =
+            logDiv.scrollHeight;
     }
 
     var origLog = console.log;
 
     console.log = function() {
-      origLog.apply(console, arguments);
+        origLog.apply(console, arguments);
 
-      var args =
-        Array.prototype.slice
-        .call(arguments)
-        .join(" ");
+        var args =
+            Array.prototype.slice
+            .call(arguments)
+            .join(" ");
 
-      appendLog(args, false);
+        appendLog(args, false);
     };
 
     var origErr = console.error;
 
     console.error = function() {
-      origErr.apply(console, arguments);
+        origErr.apply(console, arguments);
 
-      var args =
-        Array.prototype.slice
-        .call(arguments)
-        .join(" ");
+        var args =
+            Array.prototype.slice
+            .call(arguments)
+            .join(" ");
 
-      appendLog(
-        "Error: " + args,
-        true
-      );
+        appendLog(
+            "Error: " + args,
+            true
+        );
     };
 
     var OrigWorker = window.Worker;
 
-    window.Worker =
-      function(scriptURL, options) {
+    window.Worker = function(scriptURL, options) {
 
         appendLog(
-          "Launching worker: " +
-          scriptURL,
-          false
+            "Launching worker: " +
+            scriptURL,
+            false
         );
 
         var w =
-          new OrigWorker(
-            scriptURL,
-            options
-          );
+            new OrigWorker(
+                scriptURL,
+                options
+            );
 
         w.onerror = function(e) {
 
-          appendLog(
-            "Worker Error (" +
-            scriptURL +
-            "): " +
-            (
-              e.message ||
-              "Failed to load worker"
-            ),
-            true
-          );
+            appendLog(
+                "Worker Error (" +
+                scriptURL +
+                "): " +
+                (
+                    e.message ||
+                    "Failed to load worker"
+                ),
+                true
+            );
         };
 
         return w;
-      };
+    };
 
     window.addEventListener(
-      "unhandledrejection",
-      function(e) {
+        "unhandledrejection",
+        function(e) {
 
-        appendLog(
-          "Promise Error: " +
-          (
-            e.reason
-              ? (
-                  e.reason.message ||
-                  e.reason
-                )
-              : e
-          ),
-          true
-        );
+            appendLog(
+                "Promise Error: " +
+                (
+                    e.reason
+                    ? (
+                        e.reason.message ||
+                        e.reason
+                    )
+                    : e
+                ),
+                true
+            );
 
-      }
+        }
     );
 
-  })();
+})();
 </script>
 
 <script type="module" src="jb.js"></script>
