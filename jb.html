@@ -1,309 +1,277 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" manifest="cache.appcache">
+<html lang="ar" dir="rtl">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
 
-<title>ABAS4D - Running</title>
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<meta name="theme-color" content="#05070a">
+
+<title>ABAS4D — Jailbreak</title>
 
 <style>
+
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
 body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 
-body {
-    position: fixed;
-    inset: 0;
+  overflow: hidden;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background:
+    linear-gradient(
+      rgba(0,0,0,.72),
+      rgba(0,0,0,.72)
+    ),
+    url("bg.jpg") center center / cover no-repeat;
 
-    background:
-        #090b10 url("bg.jpg")
-        center center / cover no-repeat;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
-    color: #fff;
+  color: white;
 
-    font-family:
-        Arial,
-        Tahoma,
-        sans-serif;
-
-    touch-action: none;
-    overscroll-behavior: none;
+  touch-action: none;
+  overscroll-behavior: none;
 }
 
 .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(5,7,12,.80);
-    pointer-events: none;
+  position: fixed;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,255,136,.08),
+      transparent 55%
+    );
+
+  pointer-events: none;
 }
 
-.panel {
-    position: fixed;
+#wrap {
+  position: fixed;
 
-    left: 50%;
-    top: 50%;
+  left: 50%;
+  top: 50%;
 
-    width: 90%;
-    max-width: 460px;
+  transform: translate(-50%, -50%);
 
-    transform: translate(-50%, -50%);
+  width: min(88vw, 520px);
 
-    padding: 32px 25px;
+  padding: 28px 24px;
 
-    background: rgba(19,23,32,.96);
+  text-align: center;
 
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 18px;
+  border-radius: 22px;
 
-    text-align: center;
+  background:
+    rgba(5, 8, 12, .88);
 
-    box-shadow:
-        0 15px 45px rgba(0,0,0,.7);
+  border:
+    1px solid rgba(0,255,136,.22);
 
-    z-index: 2;
+  box-shadow:
+    0 0 35px rgba(0,0,0,.65),
+    0 0 25px rgba(0,255,136,.08);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  z-index: 2;
 }
 
-.logo {
-    width: 60px;
-    height: 60px;
+.brand-header {
+  display: flex;
 
-    object-fit: cover;
-    border-radius: 50%;
+  align-items: center;
+  justify-content: center;
 
-    margin-bottom: 12px;
+  gap: 14px;
+
+  margin-bottom: 8px;
 }
 
-.brand {
-    font-size: 27px;
-    font-weight: 800;
+.brand-header img {
+  width: 52px;
+  height: 52px;
 
-    margin-bottom: 25px;
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 2px solid #00ff88;
+
+  box-shadow:
+    0 0 12px rgba(0,255,136,.4);
 }
 
-#message {
-    font-size: 24px;
-    font-weight: 800;
+.brand-header b {
+  font-size: 26px;
 
-    min-height: 35px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #fff;
 }
 
-#details {
-    margin-top: 12px;
+.sub-name {
+  margin-bottom: 22px;
 
-    color: #9ba3af;
+  font-size: 16px;
 
-    font-size: 14px;
-    line-height: 1.7;
+  font-weight: 600;
+
+  color: #8b95a3;
 }
 
-.spinner {
-    width: 34px;
-    height: 34px;
+#msg {
+  min-height: 38px;
 
-    margin: 22px auto;
+  margin: 8px 0;
 
-    border: 4px solid rgba(255,255,255,.18);
+  font-size: 25px;
 
-    border-top-color: #fff;
-    border-right-color: #fff;
+  font-weight: 800;
 
-    border-radius: 50%;
+  letter-spacing: 1px;
 
-    animation: spin .8s linear infinite;
+  color: #fff;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+#state {
+  min-height: 22px;
+
+  margin-top: 8px;
+
+  font-size: 13px;
+
+  color: #8b95a3;
 }
 
-#run {
-    width: 100%;
-
-    margin-top: 24px;
-    padding: 15px;
-
-    border: 0;
-    border-radius: 10px;
-
-    background: #00c875;
-    color: #07120d;
-
-    font-size: 20px;
-    font-weight: 800;
+#log,
+#out {
+  display: none;
 }
 
-#run:disabled {
-    opacity: .45;
+body.done #msg {
+  color: #39e879;
 }
 
-.ok {
-    color: #39e879;
+body.fail #msg {
+  color: #ff3b3b;
 }
 
-.warn {
-    color: #ffd43b;
-}
-
-.bad {
-    color: #ff5252;
-}
 </style>
 </head>
+
 
 <body>
 
 <div class="overlay"></div>
 
-<div class="panel">
+<div id="wrap">
+
+  <div class="brand-header">
 
     <img
-        src="logo.png"
-        class="logo"
-        alt="ABAS4D"
-        onerror="this.style.display='none'"
+      src="logo.png"
+      alt="ABAS4D"
+      onerror="this.style.display='none'"
     >
 
-    <div class="brand">
-        ABAS4D
-    </div>
+    <b>ABAS4D</b>
 
-    <div id="message" class="ok">
-        جاهز للتشغيل
-    </div>
+  </div>
 
-    <div id="spinner"
-         class="spinner"
-         style="display:none">
-    </div>
+  <div class="sub-name">
+    عباس محمود
+  </div>
 
-    <div id="details">
-        الصفحة محمّلة من الكاش.
-    </div>
+  <div id="msg">
+    RUNNING
+  </div>
 
-    <button id="run">
-        اضغط X للبدء
-    </button>
+  <div id="state"></div>
+
+  <div id="log"></div>
+
+  <div id="out"></div>
 
 </div>
+
 
 <script>
 (function () {
 
-"use strict";
+  /*
+   * UI فقط.
+   * لا يوجد fetch.
+   * لا يوجد Date.now().
+   * لا يوجد تحميل ديناميكي لـ jb.js.
+   * jb.js يبقى مسؤولاً عن البرنامج نفسه.
+   */
 
-var message =
-    document.getElementById("message");
+  var msg = document.getElementById("msg");
+  var state = document.getElementById("state");
 
-var details =
-    document.getElementById("details");
+  if (msg) {
+    msg.textContent = "RUNNING";
+  }
 
-var spinner =
-    document.getElementById("spinner");
+  if (state) {
+    state.textContent = "";
+  }
 
-var run =
-    document.getElementById("run");
+  /*
+   * منع حركة الصفحة بسبب Stick Drift / اللمس.
+   */
 
-
-function start() {
-
-    if (run.disabled)
-        return;
-
-    run.disabled = true;
-
-    message.textContent =
-        "جاري التشغيل...";
-
-    message.className =
-        "warn";
-
-    details.textContent =
-        "انتظر...";
-
-    spinner.style.display =
-        "block";
-
-    /*
-     * اسم ثابت حتى يبقى متوافق
-     * مع AppCache.
-     */
-
-    var script =
-        document.createElement("script");
-
-    script.type = "module";
-    script.src = "jb.js";
-
-    script.onerror = function () {
-
-        spinner.style.display =
-            "none";
-
-        message.textContent =
-            "تعذر تحميل jb.js";
-
-        message.className =
-            "bad";
-
-        details.textContent =
-            "تأكد أن jb.js موجود داخل الكاش.";
-
-        run.disabled = false;
-    };
-
-    document.body.appendChild(script);
-}
-
-
-run.addEventListener(
-    "click",
-    start
-);
-
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key === "Enter" ||
-            event.key === " "
-        ) {
-            start();
-        }
-
-    }
-);
-
-
-document.addEventListener(
+  document.addEventListener(
     "touchmove",
-    function (event) {
-        event.preventDefault();
+    function (e) {
+      e.preventDefault();
     },
-    {
-        passive: false
-    }
-);
+    { passive: false }
+  );
+
+  document.addEventListener(
+    "gesturestart",
+    function (e) {
+      e.preventDefault();
+    },
+    { passive: false }
+  );
 
 })();
 </script>
+
+
+<!--
+  مهم:
+  هذا هو التحميل المباشر لـ jb.js.
+  لا نستخدم fetch ولا URL متغير.
+-->
+
+<script
+  type="module"
+  src="jb.js">
+</script>
+
 
 </body>
 </html>
