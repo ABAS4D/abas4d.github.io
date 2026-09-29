@@ -78,7 +78,6 @@
     max-height: 150px;
     overflow-y: auto;
   }
-  .err { color: #fc8181; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -90,33 +89,9 @@
   </div>
   <div class="sub-name">عباس محمود</div>
   <div id="state">running jailbreak...</div>
-  <div id="log">Loading main module...</div>
+  <div id="log">Initializing jailbreak...</div>
 </div>
 
-<script>
-  function logMsg(msg, isErr) {
-    var l = document.getElementById("log");
-    if (l) {
-      l.innerHTML += "<br>" + (isErr ? "<span class='err'>" + msg + "</span>" : msg);
-    }
-  }
-  window.onerror = function(msg, url, line) {
-    logMsg("Error: " + msg + " (Line: " + line + ")", true);
-    var st = document.getElementById("state");
-    if (st) { st.textContent = "JAILBREAK FAILED"; st.style.color = "#fc8181"; }
-  };
-</script>
-
-<script type="module">
-  import('./jb.js')
-    .then(() => {
-      logMsg('jb.js loaded successfully!');
-    })
-    .catch((err) => {
-      logMsg('Module Error: ' + (err.message || err), true);
-      var st = document.getElementById("state");
-      if (st) { st.textContent = "JAILBREAK FAILED"; st.style.color = "#fc8181"; }
-    });
-</script>
+<script type="module" src="jb.js"></script>
 </body>
 </html>
