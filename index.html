@@ -3,217 +3,128 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ABAS4D - عباس محمود</title>
+<title>ABAS4D HOST</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+  * { box-sizing: border-box; }
 
-html,
-body {
+  html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     min-height: 100%;
-}
-
-body {
-    min-height: 100vh;
-
-    font-family:
-        Arial,
-        "Segoe UI",
-        sans-serif;
-
-    color: #ffffff;
-
-    background:
-        #080b0f
-        url("bg.jpg")
-        no-repeat
-        center
-        center
-        fixed;
-
+    background: #0a0c10 url('bg.jpg') no-repeat center center fixed;
     background-size: cover;
+    color: #e6ebf2;
+    font: 15px/1.45 "Segoe UI", system-ui, sans-serif;
+  }
 
+  body {
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
 
-    overflow: hidden;
-}
-
-/* طبقة خفيفة فوق الصورة */
-.overlay {
+  .overlay {
     position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-
-    background: rgba(0, 0, 0, 0.38);
-
+    inset: 0;
+    background: rgba(10, 12, 16, 0.75);
     z-index: 1;
-}
+  }
 
-/* الكارد شبه الشفاف */
-.card {
+  .card {
     position: relative;
     z-index: 2;
-
     width: 90%;
     max-width: 460px;
-
+    background: rgba(20, 24, 33, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
     padding: 30px 24px;
-
     text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  }
 
-    background: rgba(10, 15, 20, 0.62);
-
-    border: 1px solid rgba(255, 255, 255, 0.18);
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.65),
-        0 0 20px rgba(0, 255, 136, 0.08);
-}
-
-/* الخط الأخضر العلوي */
-.card:before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 15%;
-
-    width: 70%;
-    height: 2px;
-
-    background: #00ff88;
-
-    opacity: 0.75;
-}
-
-.brand-header {
+  .brand-header {
     display: flex;
-
     align-items: center;
     justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
 
-    gap: 13px;
-
-    margin-bottom: 8px;
-}
-
-.brand-header img {
-    width: 55px;
-    height: 55px;
-
+  .brand-header img {
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-
     object-fit: cover;
-
     border: 2px solid #00ff88;
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+  }
 
-    box-shadow:
-        0 0 15px rgba(0, 255, 136, 0.35);
-}
-
-.brand-header h1 {
+  .brand-header h1 {
     margin: 0;
-
-    font-size: 27px;
-
-    font-weight: bold;
-
+    font-size: 26px;
+    font-weight: 800;
     letter-spacing: 2px;
-
     color: #ffffff;
-}
+  }
 
-.sub-name {
-    margin: 0 0 22px;
-
-    font-size: 17px;
-
-    font-weight: bold;
-
-    color: #d2d8df;
-}
-
-#state {
+  #state {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 10px 0 8px;
     min-height: 32px;
+  }
 
-    margin: 10px 0;
-
-    font-size: 21px;
-
-    font-weight: bold;
-
-    color: #7fd0a0;
-}
-
-#det {
-    margin: 0 0 8px;
-
+  #det {
     font-size: 13px;
+    color: #8b95a3;
+    margin: 0 0 8px;
+  }
 
-    color: #8e99a7;
-}
+  #det b {
+    color: #c8ced8;
+    font-weight: 600;
+  }
 
-#det b {
-    color: #dce3ea;
-}
+  #cache {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffd84d;
+    margin: 12px 0 0;
+    min-height: 24px;
+  }
 
-#cache {
-    min-height: 18px;
+  #cache.cacheok {
+    color: #39e879;
+  }
 
-    margin-top: 8px;
-
-    font-size: 12px;
-
-    color: #7d8793;
-}
-
-#cache.cacheok {
+  .ok {
     color: #7fd0a0;
-}
+  }
 
-.ok {
-    color: #7fd0a0;
-}
+  .bad {
+    color: #ff3b3b;
+  }
 
-.bad {
-    color: #fc8181;
-}
+  .warn {
+    color: #ffffff;
+  }
 
-.warn {
-    color: #f6ad55;
-}
-
-.copyright {
+  .copyright {
     margin-top: 20px;
-
-    padding-top: 13px;
-
-    border-top:
-        1px solid
-        rgba(255, 255, 255, 0.12);
-
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
     font-size: 11px;
+    color: #687384;
+    letter-spacing: 1px;
+  }
 
-    color: #77818d;
-
-    letter-spacing: 0.8px;
-}
-
-.copyright b {
+  .copyright b {
     color: #00ff88;
-}
+  }
 </style>
 </head>
 
@@ -223,33 +134,20 @@ body {
 
 <div class="card">
 
-    <div class="brand-header">
+  <div class="brand-header">
+    <img src="logo.png"
+         alt="Logo"
+         onerror="this.style.display='none'">
+    <h1>ABAS4D</h1>
+  </div>
 
-        <img
-            src="logo.png"
-            alt="Logo"
-            onerror="this.style.display='none'"
-        >
+  <div id="state">detecting firmware...</div>
+  <div id="det"></div>
+  <div id="cache"></div>
 
-        <h1>ABAS4D</h1>
-
-    </div>
-
-    <div class="sub-name">
-        عباس محمود
-    </div>
-
-    <div id="state">
-        detecting firmware...
-    </div>
-
-    <div id="det"></div>
-
-    <div id="cache"></div>
-
-    <div class="copyright">
-        © 2026 <b>عباس محمود</b> — ABAS4D
-    </div>
+  <div class="copyright">
+    © 2026 <b>ABAS4D</b> — عباس محمود
+  </div>
 
 </div>
 
@@ -286,7 +184,6 @@ body {
     );
 
     if (m) {
-
         var ms = parseInt(m[2], 16).toString(16);
 
         if (ms.length < 2)
@@ -316,7 +213,7 @@ body {
     var target = "jb.html" + location.search;
 
     function go() {
-        setState("loading jailbreak...", "warn");
+        setState("RUNNING", "warn");
         location.replace(target);
     }
 
@@ -326,28 +223,14 @@ body {
 
         function fire() {
 
-            window.removeEventListener(
-                "click",
-                fire
-            );
-
-            window.removeEventListener(
-                "keydown",
-                fire
-            );
+            window.removeEventListener("click", fire);
+            window.removeEventListener("keydown", fire);
 
             action();
         }
 
-        window.addEventListener(
-            "click",
-            fire
-        );
-
-        window.addEventListener(
-            "keydown",
-            fire
-        );
+        window.addEventListener("click", fire);
+        window.addEventListener("keydown", fire);
     }
 
     if (!supported) {
@@ -358,9 +241,7 @@ body {
         );
 
         waitForTap(
-            "UNSUPPORTED (" +
-            (key || "unknown") +
-            ") -- press X or tap to run anyway",
+            "اخرج، اطفئ الإنترنت وعُد",
             go
         );
 
@@ -379,7 +260,7 @@ body {
     } else if (!navigator.onLine) {
 
         setCache(
-            "offline -- from cache",
+            "OFFLINE — FROM CACHE",
             true
         );
 
@@ -388,7 +269,7 @@ body {
     } else if (ac.status === ac.IDLE) {
 
         setCache(
-            "cached",
+            "CACHED",
             true
         );
 
@@ -401,12 +282,12 @@ body {
         } catch (e) {}
 
         setCache(
-            "update downloaded",
+            "UPDATE DOWNLOADED",
             true
         );
 
         waitForTap(
-            "UPDATE READY -- press X or tap to reload & run",
+            "اخرج، اطفئ الإنترنت وعُد",
             function () {
                 location.reload();
             }
@@ -414,15 +295,13 @@ body {
 
     } else {
 
-        setCache(
-            "checking cache..."
-        );
+        setCache("CACHING...");
 
         ac.addEventListener(
             "downloading",
             function () {
                 setCache(
-                    "caching for offline (first run)..."
+                    "CACHING..."
                 );
             },
             false
@@ -435,7 +314,7 @@ body {
                 if (e && e.total) {
 
                     setCache(
-                        "caching " +
+                        "CACHING " +
                         Math.round(
                             (e.loaded / e.total) * 100
                         ) +
@@ -452,12 +331,12 @@ body {
             function () {
 
                 setCache(
-                    "cached for offline use",
+                    "CACHED FOR OFFLINE USE",
                     true
                 );
 
                 waitForTap(
-                    "CACHED (first run) -- press X or tap to run",
+                    "اخرج، اطفئ الإنترنت وعُد",
                     go
                 );
 
@@ -474,12 +353,12 @@ body {
                 } catch (e) {}
 
                 setCache(
-                    "update downloaded",
+                    "UPDATE DOWNLOADED",
                     true
                 );
 
                 waitForTap(
-                    "UPDATE READY -- press X or tap to reload & run",
+                    "اخرج، اطفئ الإنترنت وعُد",
                     function () {
                         location.reload();
                     }
@@ -494,7 +373,7 @@ body {
             function () {
 
                 setCache(
-                    "cached -- offline ready",
+                    "CACHED — OFFLINE READY",
                     true
                 );
 
@@ -509,11 +388,11 @@ body {
             function () {
 
                 setCache(
-                    "cache unavailable"
+                    "CACHE UNAVAILABLE"
                 );
 
                 waitForTap(
-                    "CACHE FAILED -- press X or tap to run anyway",
+                    "اخرج، اطفئ الإنترنت وعُد",
                     go
                 );
 
@@ -526,11 +405,11 @@ body {
             function () {
 
                 setCache(
-                    "cache obsolete"
+                    "CACHE OBSOLETE"
                 );
 
                 waitForTap(
-                    "CACHE OBSOLETE -- press X or tap to run",
+                    "اخرج، اطفئ الإنترنت وعُد",
                     go
                 );
 
