@@ -3,189 +3,109 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ABAS4D - عباس محمود</title>
+<title>ABAS4D - Jailbreak</title>
 
 <style>
-* {
+  * {
     box-sizing: border-box;
-}
+  }
 
-html,
-body {
+  html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     min-height: 100%;
-}
-
-body {
-    min-height: 100vh;
-
-    font-family:
-        Arial,
-        "Segoe UI",
-        sans-serif;
-
-    color: #ffffff;
-
-    background:
-        #080b0f
-        url("bg.jpg")
-        no-repeat
-        center
-        center
-        fixed;
-
+    background: #0a0c10 url('bg.jpg') no-repeat center center fixed;
     background-size: cover;
+    color: #e6ebf2;
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  }
 
+  body {
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
 
-    overflow: hidden;
-}
-
-.overlay {
+  .overlay {
     position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-
-    background: rgba(0, 0, 0, 0.38);
-
+    inset: 0;
+    background: rgba(10, 12, 16, 0.75);
     z-index: 1;
-}
+  }
 
-#wrap {
+  #wrap {
     position: relative;
     z-index: 2;
-
     width: 90%;
     max-width: 460px;
-
     padding: 30px 24px;
-
+    margin: 20px auto;
+    background: rgba(20, 24, 33, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
     text-align: center;
+  }
 
-    background: rgba(10, 15, 20, 0.62);
-
-    border: 1px solid rgba(255, 255, 255, 0.18);
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 12px 35px rgba(0, 0, 0, 0.65),
-        0 0 20px rgba(0, 255, 136, 0.08);
-}
-
-#wrap:before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 15%;
-
-    width: 70%;
-    height: 2px;
-
-    background: #00ff88;
-
-    opacity: 0.75;
-}
-
-.brand-header {
+  .brand-header {
     display: flex;
-
     align-items: center;
     justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
 
-    gap: 13px;
-
-    margin-bottom: 8px;
-}
-
-.brand-header img {
-    width: 55px;
-    height: 55px;
-
+  .brand-header img {
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-
     object-fit: cover;
-
     border: 2px solid #00ff88;
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+  }
 
-    box-shadow:
-        0 0 15px rgba(0, 255, 136, 0.35);
-}
-
-.brand-header b {
-    font-size: 27px;
-
-    font-weight: bold;
-
+  .brand-header b {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
     letter-spacing: 2px;
-
     color: #ffffff;
-}
+  }
 
-.sub-name {
-    margin: 0 0 22px;
+  .sub-name {
+    font-size: 16px;
+    color: #8b95a3;
+    margin: 0 0 24px;
+    font-weight: 600;
+  }
 
-    font-size: 17px;
-
-    font-weight: bold;
-
-    color: #d2d8df;
-}
-
-#state {
-    min-height: 32px;
-
+  #msg {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #ffffff;
     margin: 10px 0;
+    min-height: 38px;
+  }
 
-    font-size: 21px;
+  body.done #msg {
+    color: #39e879;
+  }
 
-    font-weight: bold;
+  body.fail #msg {
+    color: #ff3b3b;
+  }
 
-    color: #7fd0a0;
-}
+  #state {
+    display: none;
+  }
 
-#log {
-    margin-top: 14px;
-
-    padding: 13px;
-
-    max-height: 190px;
-
-    overflow-y: auto;
-
-    text-align: left;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-
-    color: #d4dbe3;
-
-    background: rgba(0, 0, 0, 0.38);
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.10);
-
-    border-radius: 10px;
-
-    white-space: pre-wrap;
-
-    word-break: break-all;
-}
-
-.err {
-    color: #fc8181;
-    font-weight: bold;
-}
+  #log,
+  #out {
+    display: none;
+  }
 </style>
 </head>
 
@@ -195,135 +115,52 @@ body {
 
 <div id="wrap">
 
-    <div class="brand-header">
+  <div class="brand-header">
+    <img src="logo.png"
+         alt="Logo"
+         onerror="this.style.display='none'">
 
-        <img
-            src="logo.png"
-            alt="Logo"
-            onerror="this.style.display='none'"
-        >
+    <b>ABAS4D</b>
+  </div>
 
-        <b>ABAS4D</b>
+  <div class="sub-name">عباس محمود</div>
 
-    </div>
+  <div id="msg">RUNNING</div>
 
-    <div class="sub-name">
-        عباس محمود
-    </div>
-
-    <div id="state">
-        running jailbreak...
-    </div>
-
-    <div id="log">
-        Starting exploit...
-    </div>
+  <div id="state"></div>
+  <div id="log"></div>
+  <div id="out"></div>
 
 </div>
 
 <script>
-(function() {
+  (function() {
     var logDiv = document.getElementById("log");
 
     function appendLog(msg, isErr) {
-        if (!logDiv) return;
-
-        var line = document.createElement("div");
-
-        if (isErr)
-            line.className = "err";
-
-        line.textContent = msg;
-
-        logDiv.appendChild(line);
-
-        logDiv.scrollTop =
-            logDiv.scrollHeight;
+      if (!logDiv) return;
+      var line = document.createElement("div");
+      if (isErr) line.className = "err";
+      line.textContent = msg;
+      logDiv.appendChild(line);
+      logDiv.scrollTop = logDiv.scrollHeight;
     }
 
+    /*
+     * Keep the existing exploit/program flow untouched.
+     * Logs are collected only when the existing jb.js requests them.
+     * The normal UI stays clean.
+     */
     var origLog = console.log;
-
     console.log = function() {
-        origLog.apply(console, arguments);
-
-        var args =
-            Array.prototype.slice
-            .call(arguments)
-            .join(" ");
-
-        appendLog(args, false);
+      origLog.apply(console, arguments);
     };
 
     var origErr = console.error;
-
     console.error = function() {
-        origErr.apply(console, arguments);
-
-        var args =
-            Array.prototype.slice
-            .call(arguments)
-            .join(" ");
-
-        appendLog(
-            "Error: " + args,
-            true
-        );
+      origErr.apply(console, arguments);
     };
-
-    var OrigWorker = window.Worker;
-
-    window.Worker = function(scriptURL, options) {
-
-        appendLog(
-            "Launching worker: " +
-            scriptURL,
-            false
-        );
-
-        var w =
-            new OrigWorker(
-                scriptURL,
-                options
-            );
-
-        w.onerror = function(e) {
-
-            appendLog(
-                "Worker Error (" +
-                scriptURL +
-                "): " +
-                (
-                    e.message ||
-                    "Failed to load worker"
-                ),
-                true
-            );
-        };
-
-        return w;
-    };
-
-    window.addEventListener(
-        "unhandledrejection",
-        function(e) {
-
-            appendLog(
-                "Promise Error: " +
-                (
-                    e.reason
-                    ? (
-                        e.reason.message ||
-                        e.reason
-                    )
-                    : e
-                ),
-                true
-            );
-
-        }
-    );
-
-})();
+  })();
 </script>
 
 <script type="module" src="jb.js"></script>
