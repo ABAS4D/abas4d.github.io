@@ -1,13 +1,18 @@
 CACHE MANIFEST
-# rev 20260929-v3-force-update
+# rev 20260929-v5-full-offline
 
 CACHE:
 index.html
 jb.html
-jb.js
-core.js
-mem.js
+logo.png
+ps4_offsets.js
 int64.js
+mem.js
+core.js
+jb.js
+rpc_worker.js
+payload2.bin
+goldhen.bin
 
 NETWORK:
 *
