@@ -52,13 +52,16 @@ const SHOW_LOG = params.get("log") === "1";
 if (SHOW_LOG && document.body) document.body.className = "log";
 function finishUI(ok) {
   if (SHOW_LOG || !document.body) return;
+
   const m = document.getElementById("msg");
+
   if (m)
     m.textContent = ok
-      ? "DONE"
+      ? "تم التفعيل"
       : armedEver
         ? "Restart your console"
         : "Refresh the page and run again";
+
   document.body.className = ok ? "done" : "fail";
 }
 function mark(tag, detail) {
