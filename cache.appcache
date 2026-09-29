@@ -1,28 +1,27 @@
 CACHE MANIFEST
-# rev 20260929-abas4d-offline-v27
+# rev 20260929-abas4d-v28-transparent-ui
 
 CACHE:
 index.html
 jb.html
-
 logo.png
 bg.jpg
-
 jb.js
 core.js
+core.js?v=10
 mem.js
 int64.js
 ps4_offsets.js
 rpc_worker.js
-
-core.js?v=10
-
 payload2.bin
 goldhen.bin
-
 patches/1302.bin
 patches/1350.bin
 patches/1352.bin
 
 NETWORK:
 *
+
+FALLBACK:
+index.html index.html
+jb.html jb.html
