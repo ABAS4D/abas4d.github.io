@@ -1,152 +1,140 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width,initial-scale=1.0"
->
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ABAS4D - Jailbreak</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    background:#000 url("bg.jpg") center/cover no-repeat;
-    font-family:Arial,Tahoma,sans-serif;
-    color:#fff;
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#0a0c10 url("bg.jpg") no-repeat center center fixed;
+  background-size:cover;
+  color:#e6ebf2;
+  font-family:"Segoe UI",Tahoma,Arial,sans-serif
 }
 
 body{
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center
 }
 
 .overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.72);
+  position:fixed;
+  inset:0;
+  background:rgba(10,12,16,.78);
+  z-index:1
 }
 
 #wrap{
-    position:relative;
-    z-index:2;
-    width:90%;
-    max-width:450px;
-    padding:30px 20px;
-    text-align:center;
-    background:rgba(15,15,15,.94);
-    border:1px solid rgba(255,255,255,.15);
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,.7);
+  position:relative;
+  z-index:2;
+  width:90%;
+  max-width:460px;
+  padding:30px 24px;
+  margin:20px auto;
+  background:rgba(20,24,33,.94);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.7);
+  text-align:center
 }
 
-.logo{
-    width:65px;
-    height:65px;
-    object-fit:cover;
-    border-radius:50%;
-    margin-bottom:12px;
+.brand-header{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:18px
 }
 
-.brand{
-    font-size:27px;
-    font-weight:bold;
-    letter-spacing:2px;
+.brand-header img{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #00ff88
 }
 
-.name{
-    margin-top:5px;
-    color:#999;
-    font-size:15px;
+.brand-header b{
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:2px
 }
 
-.status{
-    margin-top:28px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:13px;
-    min-height:45px;
+#firmware{
+  color:#8b95a3;
+  font-size:15px;
+  margin-bottom:25px
 }
 
 #msg{
-    font-size:25px;
-    font-weight:bold;
+  font-size:23px;
+  font-weight:800;
+  margin:15px 0;
+  min-height:34px
 }
 
-.spinner{
-    width:28px;
-    height:28px;
-    border:4px solid rgba(255,255,255,.25);
-    border-top-color:#fff;
-    border-right-color:#fff;
-    border-radius:50%;
-    animation:spin .8s linear infinite;
+#details{
+  font-size:13px;
+  color:#8b95a3;
+  min-height:40px;
+  line-height:1.7
+}
+
+button{
+  display:block;
+  width:100%;
+  margin-top:22px;
+  padding:15px;
+  border:0;
+  border-radius:10px;
+  background:#00c875;
+  color:#07120d;
+  font-size:20px;
+  font-weight:800;
+  cursor:pointer
+}
+
+button:disabled{
+  opacity:.45;
+  cursor:default
+}
+
+#spinner{
+  display:none;
+  width:30px;
+  height:30px;
+  margin:18px auto;
+  border-radius:50%;
+  border:4px solid rgba(255,255,255,.2);
+  border-top-color:#fff;
+  border-right-color:#fff;
+  animation:spin .8s linear infinite
 }
 
 @keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
+  to{transform:rotate(360deg)}
 }
 
-body.done .spinner,
-body.fail .spinner{
-    display:none;
-}
-
-body.done #msg{
-    color:#39e879;
-}
-
-body.fail #msg{
-    color:#ff3b3b;
-}
+.ok{color:#39e879}
+.warn{color:#ffd400}
+.bad{color:#ff5252}
 
 #salawat{
-    display:none;
-    margin-top:12px;
-    color:#39e879;
-    font-weight:bold;
-    font-size:16px;
+  display:none;
+  margin-top:15px;
+  color:#39e879;
+  font-weight:700
 }
-
-body.done #salawat{
-    display:block;
-}
-
-/*
-هذه العناصر مطلوبة من jb.js
-ولا نحذفها حتى لو ما تظهر للمستخدم.
-*/
-
-#state{
-    display:none;
-}
-
-#log{
-    display:none;
-}
-
-#out{
-    display:none;
-}
-
 </style>
-
 </head>
 
 <body>
@@ -155,47 +143,338 @@ body.done #salawat{
 
 <div id="wrap">
 
-    <img
-        src="logo.png"
-        class="logo"
-        alt=""
-        onerror="this.style.display='none'"
-    >
+  <div class="brand-header">
+    <img src="logo.png" alt="ABAS4D"
+         onerror="this.style.display='none'">
+    <b>ABAS4D</b>
+  </div>
 
-    <div class="brand">
-        ABAS4D
-    </div>
+  <div id="firmware">جاري فحص النظام...</div>
 
-    <div class="name">
-        عباس محمود
-    </div>
+  <div id="msg">انتظر...</div>
 
-    <div class="status">
+  <div id="spinner"></div>
 
-        <div class="spinner"></div>
+  <div id="details"></div>
 
-        <div id="msg">
-            جاري التشغيل...
-        </div>
+  <button id="start" disabled>
+    اضغط X للبدء
+  </button>
 
-    </div>
-
-    <div id="salawat">
-        صلي على محمد (ﷺ)
-    </div>
-
-    <div id="state"></div>
-    <div id="log"></div>
-    <div id="out"></div>
+  <div id="salawat">
+    صلِّ على محمد وآل محمد ﷺ
+  </div>
 
 </div>
 
-<!-- لا نضيف أي Worker wrapper هنا -->
-<script
-    type="module"
-    src="jb.js"
-></script>
+<script>
+(function(){
+
+"use strict";
+
+const msg = document.getElementById("msg");
+const firmware = document.getElementById("firmware");
+const details = document.getElementById("details");
+const start = document.getElementById("start");
+const spinner = document.getElementById("spinner");
+const salawat = document.getElementById("salawat");
+
+function text(el,value,cls){
+  el.textContent = value;
+  el.className = cls || "";
+}
+
+function getFirmware(){
+
+  const m =
+    /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(
+      navigator.userAgent
+    );
+
+  if(!m) return null;
+
+  const major = parseInt(m[1],10);
+  const minorRaw = m[2];
+  const minor = parseInt(minorRaw,16);
+
+  return {
+    key: major + "." +
+      (minor < 16
+        ? ("0"+minor.toString(16)).slice(-2)
+        : minor.toString(16)),
+    num: major * 100 + minor,
+    major: major,
+    minor: minor
+  };
+}
+
+const fw = getFirmware();
+
+const table = {
+  1302:{
+    patch:"patches/1302.bin",
+    payload:"payload2.bin"
+  },
+  1304:{
+    patch:"patches/1302.bin",
+    payload:"payload2.bin"
+  },
+  1350:{
+    patch:"patches/1350.bin",
+    payload:"payload2.bin"
+  },
+  1352:{
+    patch:"patches/1352.bin",
+    payload:"goldhen.bin"
+  }
+};
+
+if(!fw){
+
+  text(firmware,"تعذر معرفة إصدار النظام","bad");
+  text(msg,"النظام غير معروف","bad");
+  text(details,
+       "لم يتم تشغيل أي ملف.",
+       "bad");
+
+  return;
+}
+
+firmware.textContent =
+  "Firmware: " + fw.key;
+
+const cfg = table[fw.num];
+
+if(!cfg){
+
+  text(msg,"الإصدار غير موجود بالجدول","bad");
+
+  text(
+    details,
+    "لم يتم تشغيل jb.js حفاظاً على الجهاز.",
+    "bad"
+  );
+
+  return;
+}
+
+text(
+  msg,
+  "جاري فحص الملفات...",
+  "warn"
+);
+
+details.innerHTML =
+  "Patch: " + cfg.patch +
+  "<br>Payload: " + cfg.payload;
+
+async function fetchBinary(path){
+
+  const r = await fetch(
+    path + "?preflight=" + Date.now(),
+    {
+      cache:"no-store"
+    }
+  );
+
+  if(!r.ok)
+    throw new Error(
+      path + " HTTP " + r.status
+    );
+
+  return new Uint8Array(
+    await r.arrayBuffer()
+  );
+}
+
+async function preflight(){
+
+  const patch =
+    await fetchBinary(cfg.patch);
+
+  const payload =
+    await fetchBinary(cfg.payload);
+
+  /*
+   * ملفات patch الحالية عندك:
+   * 632 byte
+   * وتحتوي 10 مواقع من نوع:
+   * C6 81 xx xx xx xx EB
+   */
+
+  if(patch.length !== 632){
+
+    throw new Error(
+      "حجم patch = " +
+      patch.length +
+      " والمتوقع 632"
+    );
+  }
+
+  let sites = 0;
+
+  for(let i=0;i+6<patch.length;i++){
+
+    if(
+      patch[i] === 0xc6 &&
+      patch[i+1] === 0x81 &&
+      patch[i+6] === 0xeb
+    ){
+      sites++;
+    }
+  }
+
+  if(sites !== 10){
+
+    throw new Error(
+      "عدد مواقع patch = " +
+      sites +
+      " والمتوقع 10"
+    );
+  }
+
+  if(payload.length !== 293120){
+
+    throw new Error(
+      "حجم payload = " +
+      payload.length +
+      " والمتوقع 293120"
+    );
+  }
+
+  if(payload[0] !== 0xe9){
+
+    throw new Error(
+      "بداية payload غير صحيحة"
+    );
+  }
+
+  return {
+    patchBytes:patch.length,
+    patchSites:sites,
+    payloadBytes:payload.length
+  };
+}
+
+preflight()
+.then(function(r){
+
+  text(
+    msg,
+    "الملفات جاهزة",
+    "ok"
+  );
+
+  details.innerHTML =
+    "Firmware: " + fw.key +
+    "<br>Patch: " + cfg.patch +
+    " — 632 bytes — 10 sites" +
+    "<br>Payload: " + cfg.payload +
+    " — 293120 bytes";
+
+  start.disabled = false;
+
+  /*
+   * لا نشغل jb.js تلقائياً.
+   * لازم ضغط X / زر.
+   */
+
+  text(
+    start,
+    "اضغط X للبدء",
+    ""
+  );
+
+})
+.catch(function(e){
+
+  text(
+    msg,
+    "فشل فحص الملفات",
+    "bad"
+  );
+
+  details.textContent =
+    e && e.message
+      ? e.message
+      : String(e);
+
+  start.disabled = true;
+});
+
+function launch(){
+
+  if(start.disabled)
+    return;
+
+  start.disabled = true;
+
+  spinner.style.display = "block";
+
+  text(
+    msg,
+    "جاري التشغيل...",
+    "warn"
+  );
+
+  salawat.style.display = "block";
+
+  /*
+   * jb.js هو الملف الأصلي الموجود عندك.
+   * لا نغير داخله أي primitive/kernel operation.
+   */
+
+  const s =
+    document.createElement("script");
+
+  s.type = "module";
+
+  s.src =
+    "jb.js?run=" + Date.now();
+
+  s.onerror = function(){
+
+    spinner.style.display = "none";
+
+    text(
+      msg,
+      "تعذر تحميل jb.js",
+      "bad"
+    );
+
+    start.disabled = false;
+  };
+
+  document.body.appendChild(s);
+}
+
+start.addEventListener(
+  "click",
+  launch
+);
+
+document.addEventListener(
+  "keydown",
+  function(e){
+
+    /*
+     * زر X على يد PS4 يصل عادة كـ Enter
+     * في بعض صفحات WebKit.
+     */
+
+    if(
+      e.key === "Enter" ||
+      e.key === " "
+    ){
+      if(!start.disabled)
+        launch();
+    }
+
+  }
+);
+
+})();
+</script>
 
 </body>
-
 </html>
