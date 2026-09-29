@@ -2,28 +2,40 @@
 <html lang="en" manifest="cache.appcache">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ABAS4D HOST</title>
+
 <style>
   * { box-sizing: border-box; }
-  body {
+
+  html, body {
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    width: 100%;
+    min-height: 100%;
     background: #0a0c10 url('bg.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #e6ebf2;
+    font: 15px/1.45 "Segoe UI", system-ui, sans-serif;
+  }
+
+  body {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+
   .overlay {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(10, 12, 16, 0.75);
     z-index: 1;
   }
+
   .card {
     position: relative;
     z-index: 2;
@@ -36,7 +48,9 @@
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
+
   .brand-header {
     display: flex;
     align-items: center;
@@ -44,6 +58,7 @@
     gap: 12px;
     margin-bottom: 20px;
   }
+
   .brand-header img {
     width: 52px;
     height: 52px;
@@ -52,6 +67,7 @@
     border: 2px solid #00ff88;
     box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
   }
+
   .brand-header h1 {
     margin: 0;
     font-size: 26px;
@@ -59,131 +75,379 @@
     letter-spacing: 2px;
     color: #ffffff;
   }
-  .fw-info {
+
+  #state {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 10px 0 8px;
+    min-height: 32px;
+  }
+
+  #det {
     font-size: 13px;
-    color: #a0aec0;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.06);
-    padding: 8px 14px;
-    border-radius: 20px;
-    display: inline-block;
+    color: #8b95a3;
+    margin: 0 0 8px;
   }
-  .status-box {
-    margin-top: 10px;
-    font-size: 18px;
+
+  #det b {
+    color: #c8ced8;
     font-weight: 600;
-    color: #cbd5e0;
-    min-height: 36px;
   }
-  .done {
-    color: #00ff88 !important;
-    font-size: 34px !important;
-    font-weight: 900 !important;
-    letter-spacing: 3px;
-    text-shadow: 0 0 18px rgba(0, 255, 136, 0.7);
+
+  #cache {
+    font-size: 12px;
+    color: #5c6672;
+    margin: 8px 0 0;
+    min-height: 14px;
   }
-  .warn { color: #f6ad55; }
-  .bad { color: #fc8181; }
-  .sub-status {
-    font-size: 14px;
-    color: #cbd5e0;
-    margin-top: 14px;
-    line-height: 1.5;
+
+  #cache.cacheok {
+    color: #7fd0a0;
   }
-  .sub-status b { color: #00ff88; }
+
+  .ok {
+    color: #7fd0a0;
+  }
+
+  .bad {
+    color: #fc8181;
+  }
+
+  .warn {
+    color: #f6ad55;
+  }
+
+  .copyright {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+    color: #687384;
+    letter-spacing: 1px;
+  }
+
+  .copyright b {
+    color: #00ff88;
+  }
 </style>
 </head>
+
 <body>
+
 <div class="overlay"></div>
+
 <div class="card">
+
   <div class="brand-header">
-    <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
+    <img src="logo.png"
+         alt="Logo"
+         onerror="this.style.display='none'">
     <h1>ABAS4D</h1>
   </div>
-  <div id="fw" class="fw-info">Detecting Firmware...</div>
-  <div id="status" class="status-box">Checking cache...</div>
-  <div id="sub" class="sub-status"></div>
+
+  <div id="state">detecting firmware...</div>
+  <div id="det"></div>
+  <div id="cache"></div>
+
+  <div class="copyright">
+    © 2026 <b>ABAS4D</b> — RAW GAME
+  </div>
+
 </div>
 
 <script>
 (function () {
-    var fwEl = document.getElementById("fw");
-    var statusEl = document.getElementById("status");
-    var subEl = document.getElementById("sub");
 
-    function setStatus(text, className) {
-        statusEl.textContent = text;
-        statusEl.className = "status-box " + (className || "");
+    var stateEl = document.getElementById("state");
+    var detEl = document.getElementById("det");
+    var cacheEl = document.getElementById("cache");
+
+    function setState(t, c) {
+        stateEl.textContent = t;
+        stateEl.className = c || "";
+    }
+
+    function setCache(t, ok) {
+        cacheEl.textContent = t;
+        cacheEl.className = ok ? "cacheok" : "";
     }
 
     var params = new URLSearchParams(location.search);
-    var SUPPORTED = { 1302: 1, 1304: 1, 1350: 1, 1352: 1 };
+
+    // Firmwares this build has a MEASURED kernel table for.
+    // jb.js still runs its own kernel-table-present gate.
+    // KEEP IN SYNC with ps4_offsets.js.
+
+    var SUPPORTED = {
+        1302: 1,
+        1304: 1,
+        1350: 1,
+        1352: 1
+    };
 
     var key = null, fwnum = null;
-    var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
+
+    var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(
+        navigator.userAgent
+    );
+
     if (m) {
+
         var ms = parseInt(m[2], 16).toString(16);
-        if (ms.length < 2) ms = "0" + ms;
+
+        if (ms.length < 2)
+            ms = "0" + ms;
+
         key = m[1] + "." + ms;
-        fwnum = parseInt(m[1], 10) * 100 + parseInt(ms, 10);
+
+        fwnum =
+            parseInt(m[1], 10) * 100 +
+            parseInt(ms, 10);
     }
 
     var forced = params.get("force") === "1";
-    var supported = forced || (fwnum !== null && SUPPORTED[fwnum] === 1);
-    fwEl.innerHTML = "Firmware: <b>" + (key || "Unknown") + "</b> " + (supported ? "✔" : "❌");
+
+    var supported =
+        forced ||
+        (fwnum !== null && SUPPORTED[fwnum] === 1);
+
+    detEl.innerHTML =
+        "firmware <b>" +
+        (key || "unknown") +
+        "</b>" +
+        (supported
+            ? " &middot; <b>supported</b>"
+            : " &middot; not in this build's kernel table");
 
     var target = "jb.html" + location.search;
+
     function go() {
+        setState("loading jailbreak...", "warn");
         location.replace(target);
     }
 
-    function triggerDone() {
-        setStatus("DONE", "done");
-        if (navigator.onLine) {
-            subEl.innerHTML = "اطفئ الإنترنت الآن، ثم اضغط <b>X</b> لتشغيل الجيلبريك";
-            window.addEventListener("click", go);
-            window.addEventListener("keydown", go);
-        } else {
-            subEl.innerHTML = "جاري تشغيل الجيلبريك أوفلاين...";
-            setTimeout(go, 1200);
+    function waitForTap(msg, action) {
+
+        setState(msg, "warn");
+
+        function fire() {
+
+            window.removeEventListener(
+                "click",
+                fire
+            );
+
+            window.removeEventListener(
+                "keydown",
+                fire
+            );
+
+            action();
         }
+
+        window.addEventListener(
+            "click",
+            fire
+        );
+
+        window.addEventListener(
+            "keydown",
+            fire
+        );
     }
 
+    // Off-target consoles are not launched automatically.
     if (!supported) {
-        setStatus("UNSUPPORTED FIRMWARE", "bad");
-        subEl.textContent = "اضغط X للتشغيل على أي حال";
-        window.addEventListener("click", go);
-        window.addEventListener("keydown", go);
+
+        setState(
+            "UNSUPPORTED FIRMWARE",
+            "bad"
+        );
+
+        waitForTap(
+            "UNSUPPORTED (" +
+            (key || "unknown") +
+            ") -- press X or tap to run anyway",
+            go
+        );
+
         return;
     }
 
     var ac = window.applicationCache;
-    if (!ac || !document.documentElement.hasAttribute("manifest")) {
-        triggerDone();
-    } else if (!navigator.onLine || ac.status === ac.IDLE) {
-        triggerDone();
+
+    if (
+        !ac ||
+        !document.documentElement.hasAttribute("manifest")
+    ) {
+
+        go();
+
+    } else if (!navigator.onLine) {
+
+        setCache(
+            "offline -- from cache",
+            true
+        );
+
+        go();
+
+    } else if (ac.status === ac.IDLE) {
+
+        setCache(
+            "cached",
+            true
+        );
+
+        go();
+
     } else if (ac.status === ac.UPDATEREADY) {
-        try { ac.swapCache(); } catch (e) {}
-        triggerDone();
-    } else {
-        ac.addEventListener("downloading", function () {
-            setStatus("Caching...", "warn");
-        }, false);
-        ac.addEventListener("progress", function (e) {
-            if (e && e.total) {
-                var p = Math.round((e.loaded / e.total) * 100);
-                setStatus("Caching " + p + "%", "warn");
+
+        try {
+            ac.swapCache();
+        } catch (e) {}
+
+        setCache(
+            "update downloaded",
+            true
+        );
+
+        waitForTap(
+            "UPDATE READY -- press X or tap to reload & run",
+            function () {
+                location.reload();
             }
-        }, false);
-        ac.addEventListener("cached", triggerDone, false);
-        ac.addEventListener("updateready", function () {
-            try { ac.swapCache(); } catch (e) {}
-            triggerDone();
-        }, false);
-        ac.addEventListener("noupdate", triggerDone, false);
-        ac.addEventListener("error", triggerDone, false);
+        );
+
+    } else {
+
+        setCache(
+            "checking cache..."
+        );
+
+        ac.addEventListener(
+            "downloading",
+            function () {
+                setCache(
+                    "caching for offline (first run)..."
+                );
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "progress",
+            function (e) {
+
+                if (e && e.total) {
+
+                    setCache(
+                        "caching " +
+                        Math.round(
+                            (e.loaded / e.total) * 100
+                        ) +
+                        "%"
+                    );
+                }
+
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "cached",
+            function () {
+
+                setCache(
+                    "cached for offline use",
+                    true
+                );
+
+                waitForTap(
+                    "CACHED (first run) -- press X or tap to run",
+                    go
+                );
+
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "updateready",
+            function () {
+
+                try {
+                    ac.swapCache();
+                } catch (e) {}
+
+                setCache(
+                    "update downloaded",
+                    true
+                );
+
+                waitForTap(
+                    "UPDATE READY -- press X or tap to reload & run",
+                    function () {
+                        location.reload();
+                    }
+                );
+
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "noupdate",
+            function () {
+
+                setCache(
+                    "cached -- offline ready",
+                    true
+                );
+
+                go();
+
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "error",
+            function () {
+
+                setCache(
+                    "cache unavailable"
+                );
+
+                waitForTap(
+                    "CACHE FAILED -- press X or tap to run anyway",
+                    go
+                );
+
+            },
+            false
+        );
+
+        ac.addEventListener(
+            "obsolete",
+            function () {
+
+                setCache(
+                    "cache obsolete"
+                );
+
+                waitForTap(
+                    "CACHE OBSOLETE -- press X or tap to run",
+                    go
+                );
+
+            },
+            false
+        );
     }
+
 })();
 </script>
+
 </body>
 </html>
