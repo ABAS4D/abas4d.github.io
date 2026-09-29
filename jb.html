@@ -43,7 +43,7 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
   }
   .brand-header img {
     width: 48px;
@@ -58,8 +58,27 @@
     letter-spacing: 2px;
     color: #ffffff;
   }
+  .sub-name {
+    font-size: 18px;
+    color: #e2e8f0;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
   #state { font-size: 20px; font-weight: 700; margin: 10px 0; color: #7fd0a0; }
-  #log { font-size: 13px; color: #8b95a3; margin: 0 0 4px; white-space: pre-wrap; word-break: break-all; }
+  #log { 
+    font-size: 13px; 
+    color: #cbd5e0; 
+    margin-top: 10px; 
+    white-space: pre-wrap; 
+    word-break: break-all;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: left;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  .err { color: #fc8181; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -69,14 +88,29 @@
     <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
     <b>ABAS4D</b>
   </div>
+  <div class="sub-name">عباس محمود</div>
   <div id="state">running jailbreak...</div>
-  <div id="log"></div>
+  <div id="log">Initializing scripts...</div>
 </div>
 
-<script src="ps4_offsets.js"></script>
-<script src="int64.js"></script>
-<script src="mem.js"></script>
-<script src="core.js"></script>
-<script src="jb.js"></script>
+<script>
+  function logMsg(msg, isErr) {
+    var l = document.getElementById("log");
+    if (l) {
+      l.innerHTML += "<br>" + (isErr ? "<span class='err'>" + msg + "</span>" : msg);
+    }
+  }
+  window.onerror = function(msg, url, line) {
+    logMsg("Error: " + msg + " (Line: " + line + ")", true);
+    var st = document.getElementById("state");
+    if (st) { st.textContent = "JAILBREAK FAILED"; st.style.color = "#fc8181"; }
+  };
+</script>
+
+<script src="ps4_offsets.js" onerror="logMsg('Failed to load ps4_offsets.js', true)"></script>
+<script src="int64.js" onerror="logMsg('Failed to load int64.js', true)"></script>
+<script src="mem.js" onerror="logMsg('Failed to load mem.js', true)"></script>
+<script src="core.js" onerror="logMsg('Failed to load core.js', true)"></script>
+<script src="jb.js" onerror="logMsg('Failed to load jb.js', true)"></script>
 </body>
 </html>
