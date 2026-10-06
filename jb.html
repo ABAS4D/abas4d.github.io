@@ -4,59 +4,317 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ABAS4D - Jailbreak</title>
+
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;width:100%;min-height:100%;background:#0a0c10 url('bg.jpg') no-repeat center center fixed;background-size:cover;color:#e6ebf2;font-family:"Segoe UI",Tahoma,Arial,sans-serif}
-body{min-height:100vh;display:flex;align-items:center;justify-content:center}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.16);z-index:1}
-#wrap{position:relative;z-index:2;width:90%;max-width:460px;padding:30px 24px;margin:20px auto;background: rgba(5, 15, 35, 0.72);
+*{
+  box-sizing:border-box
+}
 
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#0a0c10 url('bg.jpg') no-repeat center center fixed;
+  background-size:cover;
+  color:#e6ebf2;
+  font-family:"Segoe UI",Tahoma,Arial,sans-serif
+}
 
-border: 1px solid rgba(50, 130, 255, 0.25);
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center
+}
 
-box-shadow:
-  0 10px 35px rgba(0, 0, 0, 0.65),
-  0 0 25px rgba(0, 80, 255, 0.12);text-align:center}
-.brand-header{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:24px}
-.brand-header img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid #00ff88;box-shadow:0 0 12px rgba(0,255,136,.4)}
-.brand-header b{font-size:26px;font-weight:800;letter-spacing:2px;color:#fff}
-.sub-name{font-size:16px;color:#8b95a3;margin:0 0 24px;font-weight:600}
-.status-row{display:flex;align-items:center;justify-content:center;gap:14px;min-height:58px}
-#msg{font-size:26px;font-weight:800;letter-spacing:1px;color:#fff;margin:0;min-height:38px}
-.spinner{width:30px;height:30px;border-radius:50%;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;border-right-color:#fff;animation:spin .8s linear infinite;flex:0 0 auto}
-@keyframes spin{to{transform:rotate(360deg)}}
-body.done .spinner,body.fail .spinner{display:none}
-body.done #msg{color:#39e879}
-body.fail #msg{color:#ff3b3b}
-#salawat{display:none;margin-top:12px;color:#39e879;font-size:16px;font-weight:700}
-body.done #salawat{display:block}
-#state,#log,#out{display:none}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.16);
+  z-index:1
+}
+
+#wrap{
+  position:relative;
+  z-index:2;
+  width:90%;
+  max-width:460px;
+  padding:30px 24px;
+  margin:20px auto;
+  background:rgba(5,15,35,.72);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(50,130,255,.25);
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.65),
+    0 0 25px rgba(0,80,255,.12);
+  text-align:center
+}
+
+.brand-header{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:24px
+}
+
+.brand-header img{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #00ff88;
+  box-shadow:0 0 12px rgba(0,255,136,.4)
+}
+
+.brand-header b{
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:2px;
+  color:#fff
+}
+
+.sub-name{
+  font-size:16px;
+  color:#8b95a3;
+  margin:0 0 24px;
+  font-weight:600
+}
+
+.status-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  min-height:58px
+}
+
+#msg{
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:1px;
+  color:#fff;
+  margin:0;
+  min-height:38px
+}
+
+.spinner{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  border:4px solid rgba(255,255,255,.25);
+  border-top-color:#fff;
+  border-right-color:#fff;
+  animation:spin .8s linear infinite;
+  flex:0 0 auto
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg)
+  }
+}
+
+body.done .spinner,
+body.fail .spinner{
+  display:none
+}
+
+body.done #msg{
+  color:#39e879
+}
+
+body.fail #msg{
+  color:#ff3b3b
+}
+
+#salawat{
+  display:none;
+  margin-top:12px;
+  color:#39e879;
+  font-size:16px;
+  font-weight:700
+}
+
+body.done #salawat{
+  display:block
+}
+
+#state,
+#log,
+#out{
+  display:none
+}
+
+/* حالة الخطأ */
+body.fail #msg{
+  color:#ff3b3b;
+}
+
+/* حالة النجاح */
+body.done #msg{
+  color:#39e879;
+}
+
+/* النص أثناء التشغيل */
+body:not(.done):not(.fail) #msg{
+  color:#fff;
+}
 </style>
 </head>
+
 <body>
+
 <div class="overlay"></div>
+
 <div id="wrap">
+
   <div class="brand-header">
-    <img src="logo.png" alt="الشعار" onerror="this.style.display='none'">
+    <img
+      src="logo.png"
+      alt="الشعار"
+      onerror="this.style.display='none'"
+    >
     <b>ABAS4D</b>
   </div>
-  <div class="sub-name">عباس محمود</div>
-  <div class="status-row">
-    <div class="spinner" aria-label="انتظر التفعيل"></div>
-    <div id="msg">انتظر التفعيل</div>
+
+  <div class="sub-name">
+    عباس محمود
   </div>
-  <div id="salawat">صلي على محمد (ﷺ)</div>
-  <div id="state"></div><div id="log"></div><div id="out"></div>
+
+  <div class="status-row">
+
+    <div
+      class="spinner"
+      aria-label="انتظر التفعيل">
+    </div>
+
+    <div id="msg">
+      انتظر التفعيل
+    </div>
+
+  </div>
+
+  <div id="salawat">
+    صلي على محمد (ﷺ)
+  </div>
+
+  <div id="state"></div>
+  <div id="log"></div>
+  <div id="out"></div>
+
 </div>
+
+
 <script>
+
+/*
+ * ABAS4D UI
+ * هذا الجزء خاص بالواجهة فقط
+ * لا يغيّر jb.js
+ */
+
 (function(){
-  var origLog=console.log,origErr=console.error;
-  console.log=function(){origLog.apply(console,arguments)};
-  console.error=function(){origErr.apply(console,arguments)};
+
+  var originalLog = console.log;
+  var originalError = console.error;
+
+  console.log = function(){
+    originalLog.apply(console, arguments);
+  };
+
+  console.error = function(){
+    originalError.apply(console, arguments);
+  };
+
+
+  function showFail(){
+
+    document.body.classList.remove("done");
+    document.body.classList.add("fail");
+
+    var msg = document.getElementById("msg");
+
+    if(msg){
+      msg.textContent =
+        "اخرج من المتصفح، أطفئ الإنترنت، وعُد وحاول";
+    }
+
+    var salawat = document.getElementById("salawat");
+
+    if(salawat){
+      salawat.style.display = "none";
+    }
+  }
+
+
+  function showDone(){
+
+    document.body.classList.remove("fail");
+    document.body.classList.add("done");
+
+    var msg = document.getElementById("msg");
+
+    if(msg){
+      msg.textContent = "DONE";
+    }
+
+  }
+
+
+  /*
+   * إذا jb.js يرسل حالة fail
+   */
+  var observer = new MutationObserver(function(){
+
+    if(document.body.classList.contains("fail")){
+      showFail();
+    }
+
+    if(document.body.classList.contains("done")){
+      showDone();
+    }
+
+  });
+
+
+  observer.observe(document.body,{
+    attributes:true,
+    attributeFilter:["class"]
+  });
+
+
+  /*
+   * أخطاء JavaScript العادية
+   */
+  window.addEventListener("error",function(){
+
+    showFail();
+
+  });
+
+
+  /*
+   * أخطاء Promise
+   */
+  window.addEventListener(
+    "unhandledrejection",
+    function(){
+
+      showFail();
+
+    }
+  );
+
 })();
+
 </script>
+
+
+<!-- ملف التفعيل الأصلي -->
 <script type="module" src="jb.js"></script>
+
 </body>
 </html>
