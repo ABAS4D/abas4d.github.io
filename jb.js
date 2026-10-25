@@ -55,7 +55,7 @@ function finishUI(ok) {
   const m = document.getElementById("msg");
   if (m)
     m.textContent = ok
-      ? "DONE"
+      ? "DONE - Lord Fordi Host"
       : armedEver
         ? "Restart your console"
         : "Refresh the page and run again";
@@ -154,8 +154,11 @@ let allDone = false,
   let closeFd = null;
   try {
     const { key, off } = offsetsFor(navigator.userAgent);
-    mark("BUILD", "jb=skipjb2 base=ef1670a");
+    
+    // التعديل هنا لتضمين اسمك وحقوقك في سجلات التشغيل
+    mark("BUILD", "jb=skipjb2 base=ef1670a -- Customized by Lord Fordi (عباس محمود)");
     mark("FW", key || "(not a PS4 UA)");
+    
     if (!off) {
       state("no offsets for this firmware", "bad");
       return;
@@ -242,16 +245,6 @@ let allDone = false,
         " src=ps4_offsets.js",
     );
 
-    // ---- benign-miss auto-retry (reads only, before any kernel write) ----
-    // A passA/passB "no crossing" is a recoverable reclaim miss in the READ
-    // phase -- no kernel .data/.text has been touched yet, so reloading and
-    // retrying is safe. The counter lives in sessionStorage so it survives
-    // the reload and is cleared the moment the read phase succeeds, so a
-    // later manual run always starts fresh. NEVER call retryBenign() after a
-    // kernel write: a reload would re-enter with the kernel already modified.
-    // A hard KP (a total reclaim miss that faults inside the cancel walk)
-    // cannot be caught here and still needs a reboot -- this only recovers
-    // the benign, detectable misses.
     const retryArg = parseInt(params.get("retry") || "", 10);
     const RETRY_MAX = Number.isFinite(retryArg) && retryArg >= 0 ? retryArg : 4;
     const RETRY_KEY = "jb1352-read-retry";
@@ -1960,9 +1953,6 @@ let allDone = false,
         " 8-byte aligned=" +
         (((W0 >>> 0) & 7) === 0),
     );
-    // Read phase is done: the remaining armings (anchor, caps) touch the
-    // kernel, so from here a failure must NOT auto-reload. Reset the counter
-    // so the next manual run starts fresh.
     clearRetry();
 
     const IDT = new int64(0x00001a00, 0xffffff80);
